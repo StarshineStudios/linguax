@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class PageSettings extends StatelessWidget {
   const PageSettings({super.key});
 

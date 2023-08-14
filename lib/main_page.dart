@@ -6,6 +6,8 @@ import 'pages/page_notes.dart';
 import 'pages/page_games.dart';
 import 'pages/page_dictionary.dart';
 
+import 'constants.dart';
+
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
 
@@ -27,18 +29,24 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[navBarIndex],
+      body: Container(
+        child: _pages[navBarIndex],
+      ),
       bottomNavigationBar: Container(
         height: 75,
-        color: const Color.fromARGB(255, 163, 84, 255),
+        color: mainColor,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GNav(
-            activeColor: const Color.fromARGB(255, 255, 247, 220),
-            tabBackgroundColor: const Color.fromARGB(255, 92, 41, 150),
+            activeColor: secondaryColor,
+            tabBackgroundColor: mainColorDarker,
 
             //the icon color btw
-            color: const Color.fromARGB(255, 255, 247, 220),
+            color: secondaryColor,
+            textStyle: TextStyle(
+              fontFamily: 'Nunito',
+              color: secondaryColor,
+            ),
             padding: const EdgeInsets.all(13),
             gap: 8,
             iconSize: 30,

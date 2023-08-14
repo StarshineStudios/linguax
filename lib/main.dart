@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'main_page.dart';
 
+import 'constants.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,9 +12,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirstPage(),
+      theme: ThemeData(
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: mainColor,
+          onPrimary: Colors.black,
+          // Colors that are not relevant to AppBar in LIGHT mode:
+          primaryContainer: Colors.grey,
+          secondary: Colors.grey,
+          secondaryContainer: Colors.grey,
+          onSecondary: Colors.grey,
+          background: Colors.grey,
+          onBackground: Colors.grey,
+          surface: Colors.grey,
+          onSurface: Colors.grey,
+          error: Colors.grey,
+          onError: Colors.grey,
+        ),
+        fontFamily: 'Nunito',
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
+        ),
+      ),
+      home: const FirstPage(),
     );
   }
 }
