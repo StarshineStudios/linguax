@@ -14,11 +14,11 @@ class FirstPage extends StatefulWidget {
 }
 
 final List<Widget> _pages = [
-  PagePath(),
-  PageNotes(),
-  PageGames(),
-  PageDictionary(),
-  PageSettings(),
+  const PagePath(),
+  const PageNotes(),
+  const PageGames(),
+  const PageDictionary(),
+  const PageSettings(),
 ];
 
 class _FirstPageState extends State<FirstPage> {
@@ -32,14 +32,14 @@ class _FirstPageState extends State<FirstPage> {
         height: 75,
         color: const Color.fromARGB(255, 163, 84, 255),
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: GNav(
-            activeColor: Color.fromARGB(255, 255, 247, 220),
-            tabBackgroundColor: Color.fromARGB(255, 92, 41, 150),
+            activeColor: const Color.fromARGB(255, 255, 247, 220),
+            tabBackgroundColor: const Color.fromARGB(255, 92, 41, 150),
 
             //the icon color btw
-            color: Color.fromARGB(255, 255, 247, 220),
-            padding: EdgeInsets.all(13),
+            color: const Color.fromARGB(255, 255, 247, 220),
+            padding: const EdgeInsets.all(13),
             gap: 8,
             iconSize: 30,
             onTabChange: (index) {
