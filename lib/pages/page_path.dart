@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class FourthPage extends StatelessWidget {
-  const FourthPage({super.key});
+class PagePath extends StatelessWidget {
+  const PagePath({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Fourth Page'),
+      child: Text('Path', style: TextStyle(fontSize: 50)),
     );
   }
 }
