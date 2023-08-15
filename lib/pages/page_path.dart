@@ -23,7 +23,7 @@ class PagePath extends StatelessWidget {
 
 Widget buildCard(int index) => ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Container(
+      child: SizedBox(
         height: 150,
         width: double.infinity,
         child: _subsections[index],
@@ -130,8 +130,8 @@ class ExpandableWidget extends StatefulWidget {
   final Color color;
   final String description;
 
-  ExpandableWidget(
-      {required this.title, required this.color, required this.description});
+  const ExpandableWidget(
+      {super.key, required this.title, required this.color, required this.description});
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();
@@ -157,26 +157,26 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
             style: ElevatedButton.styleFrom(backgroundColor: widget.color),
             child: Text(
               widget.title,
-              style: TextStyle(color: secondaryColor),
+              style: const TextStyle(color: secondaryColor),
             ),
           ),
         ),
         if (_isExpanded)
           Center(
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               color: Colors.grey[200],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(child: Text(widget.description)),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
                         // Handle the "Begin" button press here
                       },
-                      child: Text('Begin'),
+                      child: const Text('Begin'),
                     ),
                   ),
                 ],
