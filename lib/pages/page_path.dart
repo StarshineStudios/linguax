@@ -8,52 +8,57 @@ class PagePath extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondaryColor,
-      appBar: AppBar(
-        title: const Text(
-          'Path',
-          style: TextStyle(color: secondaryColor),
+        backgroundColor: secondaryColor,
+        appBar: AppBar(
+          title: const Text(
+            'Path',
+            style: TextStyle(color: secondaryColor),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: ListView(
           children: _subsections,
-        ),
-      ),
-    );
+        ));
   }
 }
 
+Widget buildCard(int index) => ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        height: 150,
+        width: double.infinity,
+        child: _subsections[index],
+      ),
+    );
+
 // Add more SubSections as needed
 final List<SubSection> _subsections = [
-  const SubSection(
+  SubSection(
     title: 'Subsection 1',
     sectionColor: Colors.teal,
   ),
-  const SubSection(
+  SubSection(
     title: 'Subsection 2',
     sectionColor: Colors.orange,
   ),
-  const SubSection(
+  SubSection(
     title: 'Subsection 3',
     sectionColor: Colors.lime,
   ),
-  const SubSection(
+  SubSection(
     title: 'Subsection 4',
     sectionColor: Colors.pink,
   ),
-  const SubSection(
+  SubSection(
     title: 'Subsection 5',
     sectionColor: Colors.orange,
   ),
-  const SubSection(
+  SubSection(
     title: 'Subsection 6',
     sectionColor: Colors.purple,
   ),
-  const SubSection(title: 'Subsection 7'),
-  const SubSection(title: 'Subsection 8'),
-  const SubSection(title: 'Subsection 9'),
+  SubSection(title: 'Subsection 7'),
+  SubSection(title: 'Subsection 8'),
+  SubSection(title: 'Subsection 9'),
 ];
 
 class SubSection extends StatelessWidget {
@@ -61,7 +66,9 @@ class SubSection extends StatelessWidget {
   final Color sectionColor;
   final List<String> buttons;
 
-  const SubSection({
+  final ScrollController _scrollController = ScrollController();
+
+  SubSection({
     required this.title,
     this.sectionColor = mainColor, // Default background color
     this.buttons = const [], // Default empty list of buttons
@@ -88,7 +95,6 @@ class SubSection extends StatelessWidget {
           const SizedBox(height: 10),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SubSectionButton(
                   label: 'Vocabulary',

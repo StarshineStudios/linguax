@@ -43,7 +43,7 @@ class _FirstPageState extends State<FirstPage> {
 
             //the icon color btw
             color: secondaryColor,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontFamily: 'Nunito',
               color: secondaryColor,
             ),
