@@ -96,25 +96,37 @@ class SubSection extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                ExpandableWidget(
-                  title: 'Vocabulary',
-                  color: sectionColor,
-                  description: 'Practice vocabulary',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandableWidget(
+                    title: 'Vocabulary',
+                    color: sectionColor,
+                    description: 'Practice vocabulary',
+                  ),
                 ),
-                ExpandableWidget(
-                  title: 'Grammar',
-                  color: sectionColor,
-                  description: 'Practice grammar',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandableWidget(
+                    title: 'Grammar',
+                    color: sectionColor,
+                    description: 'Practice grammar',
+                  ),
                 ),
-                ExpandableWidget(
-                  title: 'Audio',
-                  color: sectionColor,
-                  description: 'Practice audio exercises',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandableWidget(
+                    title: 'Audio',
+                    color: sectionColor,
+                    description: 'Practice audio exercises',
+                  ),
                 ),
-                ExpandableWidget(
-                  title: 'Culture',
-                  color: sectionColor,
-                  description: 'Practice culture',
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandableWidget(
+                    title: 'Culture',
+                    color: sectionColor,
+                    description: 'Practice culture',
+                  ),
                 ),
               ],
             ),
@@ -130,8 +142,8 @@ class ExpandableWidget extends StatefulWidget {
   final Color color;
   final String description;
 
-  const ExpandableWidget(
-      {super.key, required this.title, required this.color, required this.description});
+  ExpandableWidget(
+      {required this.title, required this.color, required this.description});
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();
@@ -146,41 +158,36 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
     });
   }
 
+  void _openSubPage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SubPageSequence(), // Display sequence of sub-pages
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: ElevatedButton(
-            onPressed: _toggleExpanded,
-            style: ElevatedButton.styleFrom(backgroundColor: widget.color),
-            child: Text(
-              widget.title,
-              style: const TextStyle(color: secondaryColor),
-            ),
-          ),
+        ElevatedButton(
+          onPressed: _toggleExpanded,
+          style: ElevatedButton.styleFrom(primary: widget.color),
+          child: Text(widget.title),
         ),
         if (_isExpanded)
-          Center(
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              color: Colors.grey[200],
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(child: Text(widget.description)),
-                  const SizedBox(height: 16.0),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle the "Begin" button press here
-                      },
-                      child: const Text('Begin'),
-                    ),
-                  ),
-                ],
-              ),
+          Container(
+            padding: EdgeInsets.all(16.0),
+            color: Colors.grey[200],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.description),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () => _openSubPage(context),
+                  child: Text('Begin'),
+                ),
+              ],
             ),
           ),
       ],
@@ -188,9 +195,74 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   }
 }
 
-// void main() {
-//   runApp(const MaterialApp(
-//     debugShowCheckedModeBanner: false,
-//     home: PagePath(),
-//   ));
-// }
+class SubPageSequence extends StatefulWidget {
+  @override
+  _SubPageSequenceState createState() => _SubPageSequenceState();
+}
+
+class _SubPageSequenceState extends State<SubPageSequence> {
+  int _currentPageIndex = 0;
+
+  Future<bool> _onWillPop() async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Warning'),
+            content: Text(
+                'All progress will be lost if you go back. Do you want to continue?'),
+            actions: [
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(true), // Allow navigation back
+                child: Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(false), // Stay on the page
+                child: Text('No'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void _nextPage() {
+    if (_currentPageIndex < 4) {
+      setState(() {
+        _currentPageIndex++;
+      });
+    } else {
+      // Navigate back when all sub-pages are visited
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(title: Text('Sub Pages')),
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Sub Page ${_currentPageIndex + 1}'),
+              ],
+            ),
+            Container(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                onPressed: _nextPage,
+                child: Text('Next'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
