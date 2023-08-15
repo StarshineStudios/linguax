@@ -169,13 +169,15 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.description),
+                  Center(child: Text(widget.description)),
                   SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle the "Begin" button press here
-                    },
-                    child: Text('Begin'),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle the "Begin" button press here
+                      },
+                      child: Text('Begin'),
+                    ),
                   ),
                 ],
               ),
@@ -186,9 +188,9 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   }
 }
 
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: PagePath(),
-  ));
-}
+// void main() {
+//   runApp(const MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     home: PagePath(),
+//   ));
+// }
