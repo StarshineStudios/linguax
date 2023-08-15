@@ -96,21 +96,25 @@ class SubSection extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                SubSectionButton(
-                  label: 'Vocabulary',
-                  buttonColor: sectionColor,
+                ExpandableWidget(
+                  title: 'Vocabulary',
+                  color: sectionColor,
+                  description: 'Practice vocabulary',
                 ),
-                SubSectionButton(
-                  label: 'Grammar',
-                  buttonColor: sectionColor,
+                ExpandableWidget(
+                  title: 'Grammar',
+                  color: sectionColor,
+                  description: 'Practice grammar',
                 ),
-                SubSectionButton(
-                  label: 'Audio',
-                  buttonColor: sectionColor,
+                ExpandableWidget(
+                  title: 'Audio',
+                  color: sectionColor,
+                  description: 'Practice audio exercises',
                 ),
-                SubSectionButton(
-                  label: 'Culture',
-                  buttonColor: sectionColor,
+                ExpandableWidget(
+                  title: 'Culture',
+                  color: sectionColor,
+                  description: 'Practice culture',
                 ),
               ],
             ),
@@ -121,29 +125,63 @@ class SubSection extends StatelessWidget {
   }
 }
 
-class SubSectionButton extends StatelessWidget {
-  final String label;
-  final Color buttonColor;
+class ExpandableWidget extends StatefulWidget {
+  final String title;
+  final Color color;
+  final String description;
 
-  const SubSectionButton({
-    required this.label,
-    this.buttonColor = mainColor,
-    Key? key,
-  }) : super(key: key);
+  ExpandableWidget(
+      {required this.title, required this.color, required this.description});
+
+  @override
+  _ExpandableWidgetState createState() => _ExpandableWidgetState();
+}
+
+class _ExpandableWidgetState extends State<ExpandableWidget> {
+  bool _isExpanded = false;
+
+  void _toggleExpanded() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-        shape: StadiumBorder(),
-        foregroundColor: secondaryColor,
-        backgroundColor: buttonColor,
-      ),
-      onPressed: () {
-        // Implement button action here
-      },
-      child: Text(label),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+          child: ElevatedButton(
+            onPressed: _toggleExpanded,
+            style: ElevatedButton.styleFrom(backgroundColor: widget.color),
+            child: Text(
+              widget.title,
+              style: TextStyle(color: secondaryColor),
+            ),
+          ),
+        ),
+        if (_isExpanded)
+          Center(
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              color: Colors.grey[200],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.description),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle the "Begin" button press here
+                    },
+                    child: Text('Begin'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
