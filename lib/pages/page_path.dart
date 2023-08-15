@@ -21,57 +21,81 @@ class PagePath extends StatelessWidget {
   }
 }
 
-Widget buildCard(int index) => ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: SizedBox(
-        height: 150,
-        width: double.infinity,
-        child: _subsections[index],
-      ),
-    );
+// Widget buildCard(int index) => ClipRRect(
+//       borderRadius: BorderRadius.circular(20),
+//       child: SizedBox(
+//         height: 150,
+//         width: double.infinity,
+//         child: _subsections[index],
+//       ),
+//     );
 
 // Add more SubSections as needed
 final List<SubSection> _subsections = [
-  SubSection(
+  const SubSection(
     title: 'Subsection 1',
     sectionColor: Colors.teal,
+    expandableWidgets: [
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 1',
+        description: 'Description 1',
+      ),
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 2',
+        description: 'Description 2',
+      )
+    ],
   ),
-  SubSection(
+  const SubSection(
     title: 'Subsection 2',
     sectionColor: Colors.orange,
+    expandableWidgets: [
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 1',
+        description: 'Description 1',
+      ),
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 2',
+        description: 'Description 2',
+      ),
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 3',
+        description: 'Description 3',
+      )
+    ],
   ),
-  SubSection(
+  const SubSection(
     title: 'Subsection 3',
-    sectionColor: Colors.lime,
+    expandableWidgets: [
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 1',
+        description: 'Description 1',
+      ),
+      ExpandableWidget(
+        color: mainColor,
+        title: 'Lesson 2',
+        description: 'Description 2',
+      )
+    ],
   ),
-  SubSection(
-    title: 'Subsection 4',
-    sectionColor: Colors.pink,
-  ),
-  SubSection(
-    title: 'Subsection 5',
-    sectionColor: Colors.orange,
-  ),
-  SubSection(
-    title: 'Subsection 6',
-    sectionColor: Colors.purple,
-  ),
-  SubSection(title: 'Subsection 7'),
-  SubSection(title: 'Subsection 8'),
-  SubSection(title: 'Subsection 9'),
 ];
 
 class SubSection extends StatelessWidget {
   final String title;
   final Color sectionColor;
-  final List<String> buttons;
 
-  final ScrollController _scrollController = ScrollController();
+  final List<ExpandableWidget> expandableWidgets;
 
-  SubSection({
+  const SubSection({
     required this.title,
     this.sectionColor = mainColor, // Default background color
-    this.buttons = const [], // Default empty list of buttons
+    required this.expandableWidgets,
     Key? key,
   }) : super(key: key);
 
@@ -95,40 +119,7 @@ class SubSection extends StatelessWidget {
           const SizedBox(height: 10),
           Center(
             child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ExpandableWidget(
-                    title: 'Vocabulary',
-                    color: sectionColor,
-                    description: 'Practice vocabulary',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ExpandableWidget(
-                    title: 'Grammar',
-                    color: sectionColor,
-                    description: 'Practice grammar',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ExpandableWidget(
-                    title: 'Audio',
-                    color: sectionColor,
-                    description: 'Practice audio exercises',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ExpandableWidget(
-                    title: 'Culture',
-                    color: sectionColor,
-                    description: 'Practice culture',
-                  ),
-                ),
-              ],
+              children: expandableWidgets,
             ),
           ),
         ],
@@ -142,8 +133,11 @@ class ExpandableWidget extends StatefulWidget {
   final Color color;
   final String description;
 
-  ExpandableWidget(
-      {required this.title, required this.color, required this.description});
+  const ExpandableWidget(
+      {super.key,
+      required this.title,
+      required this.color,
+      required this.description});
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();
@@ -160,7 +154,8 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 
   void _openSubPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => SubPageSequence(), // Display sequence of sub-pages
+      builder: (context) =>
+          const SubPageSequence(), // Display sequence of sub-pages
     ));
   }
 
@@ -171,21 +166,21 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
       children: [
         ElevatedButton(
           onPressed: _toggleExpanded,
-          style: ElevatedButton.styleFrom(primary: widget.color),
+          style: ElevatedButton.styleFrom(backgroundColor: widget.color),
           child: Text(widget.title),
         ),
         if (_isExpanded)
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             color: Colors.grey[200],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.description),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () => _openSubPage(context),
-                  child: Text('Begin'),
+                  child: const Text('Begin'),
                 ),
               ],
             ),
@@ -196,30 +191,35 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 }
 
 class SubPageSequence extends StatefulWidget {
+  const SubPageSequence({super.key});
+
   @override
   _SubPageSequenceState createState() => _SubPageSequenceState();
 }
 
 class _SubPageSequenceState extends State<SubPageSequence> {
   int _currentPageIndex = 0;
+  final TextEditingController _answerController = TextEditingController();
+  final String _realAnswer = "Answer 1"; // Placeholder answer
+  String _answerFeedback = ''; // Feedback to display after checking
 
   Future<bool> _onWillPop() async {
     return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Warning'),
-            content: Text(
+            title: const Text('Warning'),
+            content: const Text(
                 'All progress will be lost if you go back. Do you want to continue?'),
             actions: [
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(true), // Allow navigation back
-                child: Text('Yes'),
+                child: const Text('Yes'),
               ),
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(false), // Stay on the page
-                child: Text('No'),
+                child: const Text('No'),
               ),
             ],
           ),
@@ -227,15 +227,34 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         false;
   }
 
+  void _checkAnswer() {
+    if (_answerController.text == _realAnswer) {
+      setState(() {
+        _answerFeedback = 'Correct';
+      });
+    } else {
+      setState(() {
+        _answerFeedback = 'Incorrect';
+      });
+    }
+  }
+
   void _nextPage() {
     if (_currentPageIndex < 4) {
       setState(() {
         _currentPageIndex++;
+        _answerController.clear();
+        _answerFeedback = ''; // Clear feedback when moving to the next page
       });
     } else {
-      // Navigate back when all sub-pages are visited
       Navigator.of(context).pop();
     }
+  }
+
+  @override
+  void dispose() {
+    _answerController.dispose();
+    super.dispose();
   }
 
   @override
@@ -243,22 +262,39 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: AppBar(title: Text('Sub Pages')),
-        body: Stack(
+        appBar: AppBar(title: const Text('Question Pages')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Sub Page ${_currentPageIndex + 1}'),
-              ],
-            ),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: _nextPage,
-                child: Text('Next'),
+            Text('Question ${_currentPageIndex + 1}'),
+            const SizedBox(height: 16.0),
+            const Text(
+                'Placeholder Question Text'), // Replace with actual question text
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _answerController,
+              decoration: const InputDecoration(
+                hintText: 'Enter your answer',
               ),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _checkAnswer,
+              child: const Text('Check'),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              _answerFeedback,
+              style: TextStyle(
+                color: _answerFeedback == 'Correct' ? Colors.green : Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _nextPage,
+              child: const Text('Next'),
             ),
           ],
         ),
