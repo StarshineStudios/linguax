@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'pages/page_setttings.dart';
+import 'pages/5_page_setttings.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'pages/page_path.dart';
-import 'pages/page_notes.dart';
-import 'pages/page_games.dart';
-import 'pages/page_dictionary.dart';
+import 'pages/1_page_path.dart';
+import 'pages/2_page_notes.dart';
+import 'pages/3_page_games.dart';
+import 'pages/4_page_dictionary.dart';
 
 import 'package:get_storage/get_storage.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'expandable_widget.dart';
-import 'constants.dart';
+import '../../constants.dart';
 
 // Add more SubSections as needed
 class SubSection extends StatelessWidget {

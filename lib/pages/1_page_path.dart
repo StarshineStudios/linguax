@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../subsections.dart';
+import '1_path_things.dart/subsections.dart';
 
 class PagePath extends StatelessWidget {
   const PagePath({Key? key}) : super(key: key);

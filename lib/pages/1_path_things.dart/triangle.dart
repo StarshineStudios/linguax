@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 class TriangleClipPath extends StatelessWidget {
-  Color color;
+  final Color color;
 
-  TriangleClipPath({
+  const TriangleClipPath({
     super.key,
     required this.color,
   });

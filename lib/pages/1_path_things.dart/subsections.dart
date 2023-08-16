@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'question.dart';
 import 'expandable_widget.dart';
 import 'subsection.dart';
-import 'constants.dart';
+import '../../constants.dart';
 
 List<SubSection> subsections = [
   SubSection(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'question.dart';
 import 'triangle.dart';
-import 'constants.dart';
+import '../../constants.dart';
 import 'sub_page_sequence.dart';
 
 class ExpandableWidget extends StatefulWidget {
