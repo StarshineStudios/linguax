@@ -5,7 +5,8 @@ import 'constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init(); // Initialize GetStorage
+  await StorageService().box.initStorage;
+
   runApp(const MyApp());
 }
 

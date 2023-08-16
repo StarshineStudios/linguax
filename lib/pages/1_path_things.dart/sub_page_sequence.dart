@@ -4,7 +4,7 @@ import 'question.dart';
 class SubPageSequence extends StatefulWidget {
   final List<QuestionAnswer> questionAnswers; // Argument for the real answer
 
-  const SubPageSequence({super.key, required this.questionAnswers});
+  SubPageSequence({required this.questionAnswers});
 
   @override
   _SubPageSequenceState createState() =>
