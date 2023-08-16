@@ -9,7 +9,7 @@ class PagePath extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: secondaryColor,
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
         appBar: AppBar(
           title: const Text(
             'Path',

@@ -1,35 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test2/pages/page_setttings.dart';
+import 'pages/page_setttings.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'pages/page_path.dart';
 import 'pages/page_notes.dart';
 import 'pages/page_games.dart';
 import 'pages/page_dictionary.dart';
 
+import 'package:get_storage/get_storage.dart';
+
 import 'constants.dart';
+import 'main.dart';
 
 class FirstPage extends StatefulWidget {
-  const FirstPage({Key? key}) : super(key: key);
+  const FirstPage({super.key});
 
   @override
-  State<FirstPage> createState() => _FirstPageState();
+  State<FirstPage> createState() => _FirstPageState(
+      //data: data,
+      );
 }
-
-final List<Widget> _pages = [
-  const PagePath(),
-  const PageNotes(),
-  const PageGames(),
-  const PageDictionary(),
-  const PageSettings(),
-];
 
 class _FirstPageState extends State<FirstPage> {
   int navBarIndex = 0;
+  final GetStorage _data =
+      StorageService().box; // Access the singleton instance
+  late List<Widget> _pages; // Declare the list
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize _pages here, after settings is fully initialized
+    _pages = [
+      const PagePath(),
+      const PageNotes(),
+      const PageGames(),
+      const PageDictionary(),
+      const PageSettings(),
+    ];
+
+    // Ensure that 'dark mode' is initialized in settings if it's not set
+    if (_data.read('settings') == null) {
+      _data.write('settings', {'dark mode': false});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = _data.read('settings')['dark mode'];
+
     return Scaffold(
       body: Container(
+        color: isDarkMode ? Colors.black : Colors.white,
         child: _pages[navBarIndex],
       ),
       bottomNavigationBar: Container(
