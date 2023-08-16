@@ -1,48 +1,16 @@
 import 'package:flutter/material.dart';
-import 'main_page.dart';
-
-import 'constants.dart';
 import 'package:get_storage/get_storage.dart';
+import 'main_page.dart';
+import 'constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await StorageService().box.initStorage;
-
+  await GetStorage.init(); // Initialize GetStorage
   runApp(const MyApp());
 }
 
-class StorageService {
-  static final StorageService _instance = StorageService._();
-  factory StorageService() => _instance;
-
-  final GetStorage _box = GetStorage();
-
-  StorageService._();
-
-  GetStorage get box => _box;
-}
-
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final GetStorage _data = StorageService().box; // Use the singleton instance
-
-  Map<String, dynamic> realSettings = {};
-
-  Map<String, bool> defaultSettings = {
-    'dark mode': true,
-  };
-
-  @override
-  void initState() {
-    realSettings = _data.read('settings') ?? defaultSettings;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +40,7 @@ class _MyAppState extends State<MyApp> {
           bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
         ),
       ),
-      home: const FirstPage(),
+      home: const MainPage(),
     );
   }
 }
