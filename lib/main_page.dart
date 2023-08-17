@@ -39,20 +39,20 @@ class _MainPageState extends State<MainPage> {
       const PageSettings(),
     ];
 
-    // Ensure that 'dark mode' is initialized in settings if it's not set
-    // if (_data.read('settings') == null) {
-    //   _data.write('settings', {'dark mode': false});
-    // }
+    //Ensure that 'dark mode' is initialized in settings if it's not set
+    if (_data.read('settings') == null) {
+      _data.write('settings', {'dark mode': false});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //bool isDarkMode = _data.read('settings')['dark mode'];
+    Map<String, dynamic> tempSettings = _data.read('settings');
+    bool isDarkMode = tempSettings['dark mode'];
 
     return Scaffold(
       body: Container(
-        color:
-            _data.read('settings')['dark mode'] ? Colors.black : Colors.white,
+        color: isDarkMode ? Colors.black : Colors.white,
         child: _pages[navBarIndex],
       ),
       bottomNavigationBar: Container(
