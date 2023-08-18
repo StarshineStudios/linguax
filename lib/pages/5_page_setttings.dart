@@ -10,11 +10,14 @@ class PageSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     var darkMode = box.get('darkMode', defaultValue: false);
 
-    return Switch(
-      value: darkMode,
-      onChanged: (val) {
-        box.put('darkMode', !darkMode);
-      },
+    return Container(
+      color: Color.fromARGB(0, 0, 0, 0),
+      child: Switch(
+        value: darkMode,
+        onChanged: (val) {
+          box.put('darkMode', !darkMode);
+        },
+      ),
     );
   }
 }
