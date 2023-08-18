@@ -1,78 +1,156 @@
 import 'package:flutter/material.dart';
-import 'main_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'constants.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'pages/1_page_path.dart';
+import 'pages/2_page_notes.dart';
+import 'pages/3_page_games.dart';
+import 'pages/4_page_dictionary.dart';
+import 'pages/5_page_setttings.dart';
+
+import 'constants.dart';
+import 'main.dart';
+
+const darkModeBox = 'darkModeTutorial';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await StorageService().box.initStorage;
-
+  await Hive.initFlutter();
+  await Hive.openBox(darkModeBox);
   runApp(const MyApp());
 }
 
-class StorageService {
-  static final StorageService _instance = StorageService._();
-  factory StorageService() => _instance;
-
-  final GetStorage _box = GetStorage();
-
-  StorageService._();
-
-  GetStorage get box => _box;
-}
-
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: Hive.box(darkModeBox).listenable(),
+      builder: (context, box, widget) {
+        var darkMode = box.get('darkMode', defaultValue: false);
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          darkTheme: ThemeData.dark(),
+          home: const MainPage(),
+        );
+      },
+    );
+  }
+
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //
+  //     theme: ThemeData(
+  //       colorScheme: const ColorScheme(
+  //         brightness: Brightness.light,
+  //         primary: mainColor,
+  //         onPrimary: Colors.black,
+  //         // Colors that are not relevant to AppBar in LIGHT mode:
+  //         primaryContainer: Colors.grey,
+  //         secondary: Colors.grey,
+  //         secondaryContainer: Colors.grey,
+  //         onSecondary: Colors.grey,
+  //         background: Colors.grey,
+  //         onBackground: Colors.grey,
+  //         surface: Colors.grey,
+  //         onSurface: Colors.grey,
+  //         error: Colors.grey,
+  //         onError: Colors.grey,
+  //       ),
+  //       fontFamily: 'Nunito',
+  //       textTheme: const TextTheme(
+  //         displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+  //         titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+  //         bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
+  //       ),
+  //     ),
+  //     home: const MainPage(),
+  //   );
+  // }
 }
 
-class _MyAppState extends State<MyApp> {
-  final GetStorage _data = StorageService().box; // Use the singleton instance
-
-  Map<String, dynamic> realSettings = {};
-
-  Map<String, bool> defaultSettings = {
-    'dark mode': true,
-  };
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  void initState() {
-    realSettings = _data.read('settings') ?? defaultSettings;
-    super.initState();
-  }
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int navBarIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: mainColor,
-          onPrimary: Colors.black,
-          // Colors that are not relevant to AppBar in LIGHT mode:
-          primaryContainer: Colors.grey,
-          secondary: Colors.grey,
-          secondaryContainer: Colors.grey,
-          onSecondary: Colors.grey,
-          background: Colors.grey,
-          onBackground: Colors.grey,
-          surface: Colors.grey,
-          onSurface: Colors.grey,
-          error: Colors.grey,
-          onError: Colors.grey,
-        ),
-        fontFamily: 'Nunito',
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
-          titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-          bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
-        ),
-      ),
-      home: const MainPage(),
+    return ValueListenableBuilder(
+      valueListenable: Hive.box(darkModeBox).listenable(),
+      builder: (context, box, widget) {
+        List<Widget> _pages = [
+          const PagePath(),
+          const PageNotes(),
+          const PageGames(),
+          const PageDictionary(),
+          PageSettings(box: box),
+        ];
+        var darkMode = box.get('darkMode', defaultValue: false);
+        return Scaffold(
+          body: Container(
+            color: darkMode ? Colors.black : Colors.white,
+            child: _pages[navBarIndex],
+          ),
+          bottomNavigationBar: Container(
+            height: 75,
+            color: mainColor,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GNav(
+                activeColor: secondaryColor,
+                tabBackgroundColor: mainColorDarker,
+
+                //the icon color btw
+                color: secondaryColor,
+                textStyle: const TextStyle(
+                  fontFamily: 'Nunito',
+                  color: secondaryColor,
+                ),
+                padding: const EdgeInsets.all(13),
+                gap: 8,
+                iconSize: 30,
+                onTabChange: (index) {
+                  setState(() {
+                    navBarIndex = index;
+                  });
+                },
+                tabs: const [
+                  GButton(
+                    icon: Icons.home,
+                    text: 'Path',
+                  ),
+                  GButton(
+                    icon: Icons.book,
+                    text: 'Notes',
+                  ),
+                  GButton(
+                    icon: Icons.games,
+                    text: 'Games',
+                  ),
+                  GButton(
+                    icon: Icons.library_books,
+                    text: 'Dictionary',
+                  ),
+                  GButton(
+                    icon: Icons.settings,
+                    text: 'Settings',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
