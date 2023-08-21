@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class PageNotes extends StatelessWidget {
   const PageNotes({super.key});
 

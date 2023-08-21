@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'constants.dart';
-import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'pages/1_page_path.dart';
@@ -11,8 +10,6 @@ import 'pages/3_page_games.dart';
 import 'pages/4_page_dictionary.dart';
 import 'pages/5_page_setttings.dart';
 
-import 'constants.dart';
-import 'main.dart';
 
 const darkModeBox = 'darkModeTutorial';
 
@@ -43,7 +40,7 @@ ThemeData lightTheme = ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
     titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
+    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Nunito'),
   ),
 );
 
@@ -108,7 +105,7 @@ class _MainPageState extends State<MainPage> {
     return ValueListenableBuilder(
       valueListenable: Hive.box(darkModeBox).listenable(),
       builder: (context, box, widget) {
-        List<Widget> _pages = [
+        List<Widget> pages = [
           const PagePath(),
           const PageNotes(),
           const PageGames(),
@@ -119,7 +116,7 @@ class _MainPageState extends State<MainPage> {
         return Scaffold(
           body: Container(
             color: darkMode ? Colors.black : Colors.white,
-            child: _pages[navBarIndex],
+            child: pages[navBarIndex],
           ),
           bottomNavigationBar: Container(
             height: 75,

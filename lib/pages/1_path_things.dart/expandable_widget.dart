@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import '../../test_files/question.dart';
 import 'triangle.dart';
 import '../../constants.dart';
 import 'sub_page_sequence.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import '../../test_files/question.dart';
 import 'expandable_widget.dart';
 import 'subsection.dart';
 import '../../constants.dart';
@@ -14,8 +14,10 @@ List<SubSection> subsections = [
         title: 'Lesson 1',
         description: 'Description 1',
         questionAnswers: [
-          QuestionAnswer(questionText: 'Q1', answer: 'A1'),
-          QuestionAnswer(questionText: 'Q2', answer: 'A2'),
+          QuestionAnswer(questionText: 'Where is Italy?', answer: 'Europe'),
+          QuestionAnswer(
+              questionText: 'Who is the 3rd US President?',
+              answer: 'Thomas Jefferson'),
         ],
       ),
       ExpandableWidget(
@@ -23,7 +25,8 @@ List<SubSection> subsections = [
         title: 'Lesson 2',
         description: 'Description 2',
         questionAnswers: [
-          QuestionAnswer(questionText: 'Q1', answer: 'A1'),
+          QuestionAnswer(
+              questionText: "What is China's capitol city", answer: 'Beijing'),
           QuestionAnswer(questionText: 'Q2', answer: 'A2'),
         ],
       )

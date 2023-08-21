@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import '../../test_files/question.dart';
 
 class SubPageSequence extends StatefulWidget {
   final List<QuestionAnswer> questionAnswers; // Argument for the real answer
 
-  SubPageSequence({required this.questionAnswers});
+  const SubPageSequence({super.key, required this.questionAnswers});
 
   @override
   _SubPageSequenceState createState() =>
