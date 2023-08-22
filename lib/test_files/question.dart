@@ -1,6 +1,6 @@
 //chnage into a widget later
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+//import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:audioplayers/audioplayers.dart';
 
@@ -49,7 +49,8 @@ class SoundButton extends StatefulWidget {
   final String soundFilePath;
   final Color buttonColor;
   const SoundButton(
-      {super.key, required this.buttonText,
+      {super.key,
+      required this.buttonText,
       required this.soundFilePath,
       required this.buttonColor});
   @override
@@ -93,34 +94,34 @@ class QuestionAnswer {
 //Several types of questions.
 //Text lessons, introduction
 //Pronunciation
-class TextToSpeech extends StatelessWidget {
-  final FlutterTts flutterTts = FlutterTts();
-  final TextEditingController textEditingController = TextEditingController();
+// class TextToSpeech extends StatelessWidget {
+//   final FlutterTts flutterTts = FlutterTts();
+//   final TextEditingController textEditingController = TextEditingController();
 
-  TextToSpeech({super.key});
+//   TextToSpeech({super.key});
 
-  speak(String text) async {
-    await flutterTts.setLanguage(''); //en-US
-    await flutterTts.setPitch(0);
-    await await flutterTts.speak(text);
-  }
+//   speak(String text) async {
+//     await flutterTts.setLanguage(''); //en-US
+//     await flutterTts.setPitch(0);
+//     await await flutterTts.speak(text);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          TextFormField(
-            controller: textEditingController,
-          ),
-          ElevatedButton(
-            onPressed: () => speak(textEditingController.text),
-            child: const Text('press to do tts'),
-          )
-        ]),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       alignment: Alignment.center,
+//       child: Padding(
+//         padding: const EdgeInsets.all(32),
+//         child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+//           TextFormField(
+//             controller: textEditingController,
+//           ),
+//           ElevatedButton(
+//             onPressed: () => speak(textEditingController.text),
+//             child: const Text('press to do tts'),
+//           )
+//         ]),
+//       ),
+//     );
+//   }
+// }

@@ -52,7 +52,7 @@ List<SubSection> subsections = [
               'sound 4',
               'sound 5'
             ],
-            soundFilePaths: [
+            soundFilePaths: const [
               'assets/speaking-one-female-SBA-300283667.mp3',
               'assets/speaking-two-female-SBA-300286110.mp3',
               'assets/speaking-three-female-SBA-300286457.mp3',
