@@ -9,14 +9,14 @@ class ExpandableWidget extends StatefulWidget {
   final Color color;
   final String description;
 
-  final List<QuestionAnswer> questionAnswers;
+  final List<Question> questions;
 
   const ExpandableWidget(
       {super.key,
       required this.title,
       required this.color,
       required this.description,
-      required this.questionAnswers}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA
+      required this.questions}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();
@@ -34,8 +34,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   void _openSubPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => SubPageSequence(
-          questionAnswers:
-              widget.questionAnswers), // Display sequence of sub-pages
+          questions: widget.questions), // Display sequence of sub-pages
     ));
   }
 
