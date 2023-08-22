@@ -4,8 +4,9 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 
-void main() async {
+void main() {
   runApp(MyApp());
 }
 
@@ -14,13 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Sound Button Example')),
+        appBar: AppBar(title: Text('Multiple Choice Example')),
         body: Center(
-          child: SoundButton(
-            buttonText: 'Play Sound',
-            soundFilePath:
-                'assets/sound.mp3', // Update with your sound file path
-            buttonColor: Colors.purple,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MultipleChoiceQuestion(
+                  options: ['Thing 1', 'Thing 2', 'Thing 3'], correctIndex: 2)
+            ],
           ),
         ),
       ),
@@ -28,7 +30,82 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//has one correct answer.
+class MultipleChoiceQuestion extends StatelessWidget {
+  List<String> options;
+
+  int selectedIndex = -1;
+  int correctIndex;
+
+  MultipleChoiceQuestion(
+      {super.key, required this.options, required this.correctIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultipleChoiceWidget(
+      options: options,
+      onOptionSelected: (index) {
+        selectedIndex = index;
+        //print('Selected option: ${index + 1}');
+      },
+    );
+  }
+
+  bool check() {
+    return correctIndex == selectedIndex;
+  }
+}
+
+class MultipleChoiceWidget extends StatefulWidget {
+  final List<String> options;
+  final void Function(int) onOptionSelected;
+
+  MultipleChoiceWidget({required this.options, required this.onOptionSelected});
+
+  @override
+  _MultipleChoiceWidgetState createState() => _MultipleChoiceWidgetState();
+}
+
+class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
+  int _selectedOptionIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: widget.options.asMap().entries.map((entry) {
+        int index = entry.key;
+        String option = entry.value;
+        bool isSelected = index == _selectedOptionIndex;
+
+        return ListTile(
+          onTap: () {
+            setState(() {
+              _selectedOptionIndex = index;
+              widget.onOptionSelected(index);
+            });
+          },
+          title: Text(option),
+          leading: isSelected
+              ? Icon(Icons.radio_button_checked)
+              : Icon(Icons.radio_button_unchecked),
+        );
+      }).toList(),
+    );
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+
 class SoundButton extends StatefulWidget {
   final String buttonText;
   final String soundFilePath;

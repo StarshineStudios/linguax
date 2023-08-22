@@ -16,7 +16,7 @@ class ExpandableWidget extends StatefulWidget {
       required this.title,
       required this.color,
       required this.description,
-      required this.questionAnswers});
+      required this.questionAnswers}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();

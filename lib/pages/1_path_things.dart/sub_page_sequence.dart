@@ -1,6 +1,37 @@
 import 'package:flutter/material.dart';
 import '../../test_files/question.dart';
 
+class MultipleChoiceOption extends StatelessWidget {
+  String title;
+
+  MultipleChoiceOption({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        child: Text('$title'),
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+//Note to future self: use the
+class MultipleChoiceWidget extends StatelessWidget {
+  int selectedIndex = -1;
+
+  List<MultipleChoiceOption> options;
+
+  MultipleChoiceWidget({super.key, required this.options});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+////////////////////////////////////////////////////
 class SubPageSequence extends StatefulWidget {
   final List<QuestionAnswer> questionAnswers; // Argument for the real answer
 
@@ -13,6 +44,7 @@ class SubPageSequence extends StatefulWidget {
 
 class _SubPageSequenceState extends State<SubPageSequence> {
   int _currentPageIndex = 0;
+
   final TextEditingController _answerController = TextEditingController();
 
   bool isNextActive = false;
