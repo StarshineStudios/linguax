@@ -2,21 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Multiple Choice Example')),
-        body: Center(
+        appBar: AppBar(title: const Text('Multiple Choice Example')),
+        body: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -48,8 +48,8 @@ class SoundButton extends StatefulWidget {
   final String buttonText;
   final String soundFilePath;
   final Color buttonColor;
-  SoundButton(
-      {required this.buttonText,
+  const SoundButton(
+      {super.key, required this.buttonText,
       required this.soundFilePath,
       required this.buttonColor});
   @override
@@ -117,7 +117,7 @@ class TextToSpeech extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () => speak(textEditingController.text),
-            child: Text('press to do tts'),
+            child: const Text('press to do tts'),
           )
         ]),
       ),

@@ -4,7 +4,7 @@ class SubSectionPage extends StatelessWidget {
   final String subSectionTitle;
   final String buttonLabel;
 
-  const SubSectionPage(this.subSectionTitle, this.buttonLabel);
+  const SubSectionPage(this.subSectionTitle, this.buttonLabel, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SubSectionPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context); // Navigate back to the previous page
               },
-              child: Text('Back'),
+              child: const Text('Back'),
             ),
           ],
         ),

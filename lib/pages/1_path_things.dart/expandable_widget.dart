@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../test_files/question.dart';
 import 'triangle.dart';
 import '../../constants.dart';
 import 'sub_page_sequence.dart';
@@ -16,7 +15,7 @@ class ExpandableWidget extends StatefulWidget {
       required this.title,
       required this.color,
       required this.description,
-      required this.questions}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA
+      required this.questions}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA//done
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();

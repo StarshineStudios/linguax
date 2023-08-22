@@ -10,12 +10,11 @@ import 'pages/3_page_games.dart';
 import 'pages/4_page_dictionary.dart';
 import 'pages/5_page_setttings.dart';
 
-
-const darkModeBox = 'darkModeTutorial';
+const generalBox = 'darkModeTutorial';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox(darkModeBox);
+  await Hive.openBox(generalBox);
   runApp(const MyApp());
 }
 
@@ -75,7 +74,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: Hive.box(darkModeBox).listenable(),
+      valueListenable: Hive.box(generalBox).listenable(),
       builder: (context, box, widget) {
         var darkMode = box.get('darkMode', defaultValue: false);
         return MaterialApp(
@@ -103,7 +102,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: Hive.box(darkModeBox).listenable(),
+      valueListenable: Hive.box(generalBox).listenable(),
       builder: (context, box, widget) {
         List<Widget> pages = [
           const PagePath(),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../test_files/question.dart';
 import 'expandable_widget.dart';
 import '../1_page_path.dart';
-import '../../constants.dart';
 import 'sub_page_sequence.dart';
 
 List<SubSection> subsections = [
@@ -18,7 +16,7 @@ List<SubSection> subsections = [
           MultipleChoiceQuestion(
             prompt: 'What is one plus two?',
             correctIndex: 2,
-            options: ['1', '2', '3', '4', '5'],
+            options: const ['1', '2', '3', '4', '5'],
           ),
         ],
       ),
@@ -29,7 +27,49 @@ List<SubSection> subsections = [
         questions: [
           TypedQuestion(
             prompt: 'What is one plus one?',
-            answers: ['two', 'Two', '2', 'Dos', 'dos'],
+            answers: const ['two', 'Two', '2', 'Dos', 'dos'],
+          ),
+        ],
+      ),
+    ],
+  ),
+  SubSection(
+    title: 'Subsection 2',
+    sectionColor: Colors.teal,
+    expandableWidgets: [
+      ExpandableWidget(
+        color: Colors.teal,
+        title: 'Lesson 1',
+        description: 'Description 1',
+        questions: [
+          AudioMultipleChoiceQuestion(
+            prompt: 'What is 3 minus 1',
+            correctIndex: 1,
+            options: const [
+              'sound 1',
+              'sound 2',
+              'sound 3',
+              'sound 4',
+              'sound 5'
+            ],
+            soundFilePaths: [
+              'assets/speaking-one-female-SBA-300283667.mp3',
+              'assets/speaking-two-female-SBA-300286110.mp3',
+              'assets/speaking-three-female-SBA-300286457.mp3',
+              'assets/speaking-four-female-SBA-300286460.mp3',
+              'assets/speaking-five-female-SBA-300287067.mp3',
+            ],
+          ),
+        ],
+      ),
+      ExpandableWidget(
+        color: Colors.teal,
+        title: 'Lesson 2',
+        description: 'Description 2',
+        questions: [
+          TypedQuestion(
+            prompt: 'What is one plus one?',
+            answers: const ['two', 'Two', '2', 'Dos', 'dos'],
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../test_files/question.dart';
+
+import 'package:audioplayers/audioplayers.dart';
 
 //has one correct answer.
 abstract class Question extends StatelessWidget {
@@ -54,7 +55,8 @@ class MultipleChoiceWidget extends StatefulWidget {
   final List<String> options;
   final void Function(int) onOptionSelected;
 
-  MultipleChoiceWidget({required this.options, required this.onOptionSelected});
+  const MultipleChoiceWidget(
+      {super.key, required this.options, required this.onOptionSelected});
 
   @override
   _MultipleChoiceWidgetState createState() => _MultipleChoiceWidgetState();
@@ -80,8 +82,8 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
           },
           title: Text(option),
           leading: isSelected
-              ? Icon(Icons.radio_button_checked)
-              : Icon(Icons.radio_button_unchecked),
+              ? const Icon(Icons.radio_button_checked)
+              : const Icon(Icons.radio_button_unchecked),
         );
       }).toList(),
     );
@@ -112,6 +114,105 @@ class TypedQuestion extends Question {
   @override
   String hint() {
     return 'it might be one of these: $answers';
+  }
+}
+
+class AudioMultipleChoiceQuestion extends Question {
+  List<String> options;
+  List<String> soundFilePaths;
+  int selectedIndex = -1;
+  int correctIndex;
+
+  AudioMultipleChoiceQuestion(
+      {super.key,
+      required this.options,
+      required this.correctIndex,
+      required super.prompt,
+      required this.soundFilePaths});
+
+  @override
+  Widget build(BuildContext context) {
+    return AudioMultipleChoiceWidget(
+      soundFilePaths: soundFilePaths,
+      optionTexts: options,
+      onOptionSelected: (index) {
+        selectedIndex = index;
+        //print('Selected option: ${index + 1}');
+      },
+    );
+  }
+
+  @override
+  bool check() {
+    return correctIndex == selectedIndex;
+  }
+
+  @override
+  String hint() {
+    return 'it might be at this index: $correctIndex';
+  }
+}
+
+//This is a widget that simply displays a Column of AUDIO multiple choices.
+class AudioMultipleChoiceWidget extends StatefulWidget {
+  final List<String> optionTexts;
+  final List<String> soundFilePaths;
+  final void Function(int) onOptionSelected;
+
+  const AudioMultipleChoiceWidget(
+      {super.key,
+      required this.optionTexts,
+      required this.onOptionSelected,
+      required this.soundFilePaths});
+
+  @override
+  _AudioMultipleChoiceWidgetState createState() =>
+      _AudioMultipleChoiceWidgetState();
+}
+
+class _AudioMultipleChoiceWidgetState extends State<AudioMultipleChoiceWidget> {
+  int _selectedOptionIndex = -1;
+
+  late AudioPlayer audioPlayer;
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _playSound(int index) async {
+    await audioPlayer.play(widget.soundFilePaths[_selectedOptionIndex]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: widget.optionTexts.asMap().entries.map((entry) {
+        int index = entry.key;
+        String option = entry.value;
+        bool isSelected = index == _selectedOptionIndex;
+
+        return ListTile(
+          onTap: () {
+            setState(() {
+              _selectedOptionIndex = index;
+              widget.onOptionSelected(index);
+              _playSound(index);
+            });
+          },
+          title: Text(option),
+          leading: isSelected
+              ? const Icon(Icons.radio_button_checked)
+              : const Icon(Icons.radio_button_unchecked),
+        );
+      }).toList(),
+    );
   }
 }
 
