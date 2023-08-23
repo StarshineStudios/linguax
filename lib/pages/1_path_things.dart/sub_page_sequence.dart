@@ -17,6 +17,7 @@ abstract class Question extends StatelessWidget {
 }
 
 //This displays a title with a MultipleChoiceWidget underneath.
+
 class MultipleChoiceQuestion extends Question {
   List<String> options;
   int selectedIndex = -1;
@@ -187,7 +188,8 @@ class _AudioMultipleChoiceWidgetState extends State<AudioMultipleChoiceWidget> {
   }
 
   void _playSound(int index) async {
-    await audioPlayer.play(widget.soundFilePaths[_selectedOptionIndex]);
+    await audioPlayer.play(DeviceFileSource(widget.soundFilePaths[
+        _selectedOptionIndex])); //TODO: Update Audio Player thing. Most Code should be okay for now.
   }
 
   @override

@@ -72,7 +72,7 @@ class _SoundButtonState extends State<SoundButton> {
   }
 
   void _playSound() async {
-    await audioPlayer.play(widget.soundFilePath);
+    await audioPlayer.play(widget.soundFilePath as Source);
   }
 
   @override
