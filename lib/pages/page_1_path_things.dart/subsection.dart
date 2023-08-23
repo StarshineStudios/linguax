@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'expandable_widget.dart';
 import '../../constants.dart';
+import 'audio_lesson_button.dart';
 
 // Add more SubSections as needed
 class SubSection extends StatelessWidget {
   final String title;
   final Color sectionColor;
 
+  final AudioLessonButton audioLessonButton;
   final List<ExpandableWidget> expandableWidgets;
 
   const SubSection({
     required this.title,
     this.sectionColor = mainColor, // Default background color
+    required this.audioLessonButton,
     required this.expandableWidgets,
     Key? key,
   }) : super(key: key);
@@ -35,6 +38,9 @@ class SubSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          Center(
+            child: audioLessonButton,
+          ),
           Center(
             child: Column(
               children: expandableWidgets,

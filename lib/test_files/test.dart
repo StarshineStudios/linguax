@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import '../pages/page_1_path_things.dart/audio_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,141 +16,12 @@ class MyApp extends StatelessWidget {
         body: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [AudioWidget()],
+            children: [
+              AudioWidget(
+                assetSource: 'speaking-eight-female-SBA-300282962.mp3',
+              )
+            ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class AudioWidget extends StatefulWidget {
-  const AudioWidget({super.key});
-
-  @override
-  State<AudioWidget> createState() => _AudioWidgetState();
-}
-
-class _AudioWidgetState extends State<AudioWidget> {
-  bool isPlaying = false;
-  late final AudioPlayer player;
-  late final AssetSource path;
-
-  Duration _duration = const Duration();
-  Duration _position = const Duration();
-
-  @override
-  void initState() {
-    initPlayer();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
-  }
-
-  Future initPlayer() async {
-    player = AudioPlayer();
-    path = AssetSource('orchestra-string-section-tune-SBA-300120703.mp3');
-
-    //for duration change
-    player.onDurationChanged.listen((Duration d) {
-      setState(() => _duration = d);
-    });
-
-    //for position change
-    player.onPositionChanged.listen((Duration p) {
-      setState(() => _position = p);
-    });
-
-    //for when audio ends
-    player.onPlayerComplete.listen((_) {
-      setState(() => _position = _duration);
-    });
-  }
-
-  void playPause() async {
-    if (isPlaying) {
-      player.pause();
-      isPlaying = false;
-    } else {
-      player.play(path);
-      isPlaying = true;
-    }
-    setState(() {});
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text('EXAMPLE TEXT'),
-            SizedBox(
-              height: 16,
-            ),
-            Slider(
-              value: _position.inSeconds.toDouble(),
-              onChanged: (value) async {
-                await player.seek(Duration(seconds: value.toInt()));
-                setState(() {});
-
-                //optional, I make it resume when the thing is scrubbbed
-                await player.resume();
-                isPlaying = true;
-              },
-              min: 0,
-              max: _duration.inSeconds.toDouble(),
-              inactiveColor: Colors.grey,
-              activeColor: Colors.red,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(_duration.toString()), //fix later!
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    player.seek(Duration(seconds: _position.inSeconds - 10));
-                  },
-                  child: Image.asset('assets/tenBack.png'),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: playPause,
-                  child: Icon(
-                    isPlaying ? Icons.pause_circle : Icons.play_circle,
-                    color: Colors.red,
-                    size: 100,
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                InkWell(
-                  onTap: () {
-                    player.seek(Duration(seconds: _position.inSeconds + 10));
-                  },
-                  child: Image.asset('assets/tenForward.png'),
-                ),
-              ],
-            )
-          ],
         ),
       ),
     );

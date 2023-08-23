@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test2/pages/page_1_path_things.dart/audio_lesson_button.dart';
 import 'expandable_widget.dart';
 import '../page_1_path.dart';
 import 'sub_page_sequence.dart';
+import 'subsection.dart';
 
 List<SubSection> subsections = [
   SubSection(
     title: 'Subsection 1',
     sectionColor: Colors.teal,
+    audioLessonButton: AudioLessonButton(
+      title: 'AUDIO LESSON 1',
+      color: Colors.teal,
+      description: 'FIRST AUDIO LESSON',
+      assetSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+    ),
     expandableWidgets: [
       ExpandableWidget(
         color: Colors.teal,
@@ -36,6 +44,11 @@ List<SubSection> subsections = [
   SubSection(
     title: 'Subsection 2',
     sectionColor: Colors.teal,
+    audioLessonButton: AudioLessonButton(
+        title: 'AUDIO LESSON 2',
+        color: Colors.teal,
+        description: 'SECOND AUDIO LESSON',
+        assetSource: 'orchestra-string-section-tune-SBA-300120703.mp3'),
     expandableWidgets: [
       ExpandableWidget(
         color: Colors.teal,
