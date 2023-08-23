@@ -54,7 +54,7 @@ class SoundButton extends StatefulWidget {
       required this.soundFilePath,
       required this.buttonColor});
   @override
-  _SoundButtonState createState() => _SoundButtonState();
+  State<SoundButton> createState() => _SoundButtonState();
 }
 
 class _SoundButtonState extends State<SoundButton> {

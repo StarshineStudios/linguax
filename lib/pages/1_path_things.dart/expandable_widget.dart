@@ -18,7 +18,7 @@ class ExpandableWidget extends StatefulWidget {
       required this.questions}); //NOTE TO FUTURE SELF: USE THIS TO PASS DATA//done
 
   @override
-  _ExpandableWidgetState createState() => _ExpandableWidgetState();
+  State<ExpandableWidget> createState() => _ExpandableWidgetState();
 }
 
 class _ExpandableWidgetState extends State<ExpandableWidget> {
@@ -57,39 +57,37 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
             Column(
               children: [
                 TriangleClipPath(color: widget.color),
-                Container(
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: widget.color,
-                        border: Border.all(width: 0, color: widget.color),
-                      ),
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.description,
-                            style: const TextStyle(
-                                color: secondaryColor, fontFamily: 'Nunito'),
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.color,
+                      border: Border.all(width: 0, color: widget.color),
+                    ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.description,
+                          style: const TextStyle(
+                              color: secondaryColor, fontFamily: 'Nunito'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(secondaryColor),
+                            padding: MaterialStateProperty.all(
+                                const EdgeInsets.all(1)),
                           ),
-                          const SizedBox(height: 16.0),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(secondaryColor),
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(1)),
-                            ),
-                            onPressed: () => _openSubPage(context),
-                            child: Text(
-                              'Begin',
-                              style: TextStyle(color: widget.color),
-                            ),
+                          onPressed: () => _openSubPage(context),
+                          child: Text(
+                            'Begin',
+                            style: TextStyle(color: widget.color),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

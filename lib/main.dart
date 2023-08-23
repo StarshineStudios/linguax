@@ -4,11 +4,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'constants.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import 'pages/1_page_path.dart';
-import 'pages/2_page_notes.dart';
-import 'pages/3_page_games.dart';
-import 'pages/4_page_dictionary.dart';
-import 'pages/5_page_setttings.dart';
+import 'pages/page_1_path.dart';
+import 'pages/page_2_notes.dart';
+import 'pages/page_3_games.dart';
+import 'pages/page_4_dictionary.dart';
+import 'pages/page_5_settings.dart';
 
 const generalBox = 'darkModeTutorial';
 

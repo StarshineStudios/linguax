@@ -49,5 +49,16 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!--for the audio player-->
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true />
+		</dict>
+		<!--THIS LINE IS OPTIONAL, HAVE IT ONLY IF WE USE MIC! OR ARE TOO LAZY TO DO A Podfile-->
+		<!--TODO: FIND OUT WHAT A Podfile is: https://www.youtube.com/watch?v=DIqB8qEZW1U&t=41s&ab_channel=MarcusNg-->
+		<!--<key>NSMicrophoneUsageDescription</key>
+		<string>This app uses the microphone</string>-->
+		
 	</dict>
 </plist>

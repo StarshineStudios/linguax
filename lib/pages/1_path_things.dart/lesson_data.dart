@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'expandable_widget.dart';
-import '../1_page_path.dart';
+import '../page_1_path.dart';
 import 'sub_page_sequence.dart';
 
 List<SubSection> subsections = [
@@ -53,11 +53,11 @@ List<SubSection> subsections = [
               'sound 5'
             ],
             soundFilePaths: const [
-              'assets/speaking-one-female-SBA-300283667.mp3',
-              'assets/speaking-two-female-SBA-300286110.mp3',
-              'assets/speaking-three-female-SBA-300286457.mp3',
-              'assets/speaking-four-female-SBA-300286460.mp3',
-              'assets/speaking-five-female-SBA-300287067.mp3',
+              'speaking-one-female-SBA-300283667.mp3',
+              'speaking-two-female-SBA-300286110.mp3',
+              'speaking-three-female-SBA-300286457.mp3',
+              'speaking-four-female-SBA-300286460.mp3',
+              'speaking-five-female-SBA-300287067.mp3',
             ],
           ),
         ],

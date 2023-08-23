@@ -19,9 +19,9 @@ abstract class Question extends StatelessWidget {
 //This displays a title with a MultipleChoiceWidget underneath.
 
 class MultipleChoiceQuestion extends Question {
-  List<String> options;
+  final List<String> options;
   int selectedIndex = -1;
-  int correctIndex;
+  final int correctIndex;
 
   MultipleChoiceQuestion(
       {super.key,
@@ -60,7 +60,7 @@ class MultipleChoiceWidget extends StatefulWidget {
       {super.key, required this.options, required this.onOptionSelected});
 
   @override
-  _MultipleChoiceWidgetState createState() => _MultipleChoiceWidgetState();
+  State<MultipleChoiceWidget> createState() => _MultipleChoiceWidgetState();
 }
 
 class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
@@ -92,8 +92,9 @@ class _MultipleChoiceWidgetState extends State<MultipleChoiceWidget> {
 }
 
 class TypedQuestion extends Question {
-  List<String> answers;
-  TextEditingController textController = TextEditingController();
+  final List<String> answers;
+  final TextEditingController textController = TextEditingController();
+
   TypedQuestion({super.key, required this.answers, required super.prompt});
 
   @override
@@ -119,10 +120,10 @@ class TypedQuestion extends Question {
 }
 
 class AudioMultipleChoiceQuestion extends Question {
-  List<String> options;
-  List<String> soundFilePaths;
+  final List<String> options;
+  final List<String> soundFilePaths;
   int selectedIndex = -1;
-  int correctIndex;
+  final int correctIndex;
 
   AudioMultipleChoiceQuestion(
       {super.key,
@@ -167,7 +168,7 @@ class AudioMultipleChoiceWidget extends StatefulWidget {
       required this.soundFilePaths});
 
   @override
-  _AudioMultipleChoiceWidgetState createState() =>
+  State<AudioMultipleChoiceWidget> createState() =>
       _AudioMultipleChoiceWidgetState();
 }
 
@@ -188,7 +189,7 @@ class _AudioMultipleChoiceWidgetState extends State<AudioMultipleChoiceWidget> {
   }
 
   void _playSound(int index) async {
-    await audioPlayer.play(DeviceFileSource(widget.soundFilePaths[
+    await audioPlayer.play(AssetSource(widget.soundFilePaths[
         _selectedOptionIndex])); //TODO: Update Audio Player thing. Most Code should be okay for now.
   }
 
@@ -225,8 +226,7 @@ class SubPageSequence extends StatefulWidget {
   const SubPageSequence({super.key, required this.questions});
 
   @override
-  _SubPageSequenceState createState() =>
-      _SubPageSequenceState(questions: questions);
+  State<SubPageSequence> createState() => _SubPageSequenceState();
 }
 
 class _SubPageSequenceState extends State<SubPageSequence> {
@@ -237,10 +237,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
   bool isNextActive = false;
   String _answerFeedback = ''; //Correct or Incorrect
 
-  final List<Question> questions; // Store the passed real answer
-
-  _SubPageSequenceState(
-      {required this.questions}); // Constructor that accepts real answer
+  //final List<Question> questions = widget.questions; // Store the passed real answer
 
   Future<bool> _onWillPop() async {
     return await showDialog(
@@ -267,7 +264,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
   }
 
   void _nextPage() {
-    if (_currentPageIndex < questions.length - 1) {
+    if (_currentPageIndex < widget.questions.length - 1) {
       setState(() {
         _currentPageIndex++;
         //_answerController.clear();
@@ -295,8 +292,8 @@ class _SubPageSequenceState extends State<SubPageSequence> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(questions[_currentPageIndex].prompt),
-            questions[_currentPageIndex],
+            Text(widget.questions[_currentPageIndex].prompt),
+            widget.questions[_currentPageIndex],
 
             // Text(questionAnswers[_currentPageIndex].questionText),
             // const SizedBox(height: 16.0),
@@ -304,7 +301,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             // const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                if (questions[_currentPageIndex].check()) {
+                if (widget.questions[_currentPageIndex].check()) {
                   setState(() {
                     _answerFeedback = 'Correct';
                     isNextActive = true;
@@ -313,7 +310,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
                   setState(() {
                     isNextActive = false; // TEMPORARY THING LJASKLJF:LADS
                     _answerFeedback =
-                        'Incorrect. Hint: ${questions[_currentPageIndex].hint()}. fsljlfas';
+                        'Incorrect. Hint: ${widget.questions[_currentPageIndex].hint()}. fsljlfas';
                   });
                 }
               },
