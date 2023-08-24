@@ -150,7 +150,8 @@ class _AudioWidgetState extends State<AudioWidget> {
                       // });
                     },
                     min: 0,
-                    max: _duration.inMicroseconds.toDouble(),
+                    //some audio clips have their real time 4:00:01, and therefore this number is already greater than 4:00:00
+                    max: _duration.inMicroseconds.toDouble() + 2,
                     inactiveColor: Colors.grey,
                     activeColor: mainColor,
                   ),
