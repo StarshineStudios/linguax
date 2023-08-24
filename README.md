@@ -1,6 +1,6 @@
-# lingva
+# Linguax
 
-A platform for learning Latin
+Is a lightweight cross-platform language learning app. It stores progress on a language course in a local database. 
 
 ## Getting Started
-is what this project is doing right now
+This app uses Flutter
