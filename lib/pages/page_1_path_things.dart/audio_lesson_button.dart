@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test2/pages/page_1_path_things.dart/audio_widget.dart';
 import 'triangle.dart';
 import '../../constants.dart';
-import 'sub_page_sequence.dart';
 
 class AudioLessonButton extends StatefulWidget {
   final String title;

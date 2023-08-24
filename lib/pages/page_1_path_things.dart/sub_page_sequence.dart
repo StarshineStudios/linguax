@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 //has one correct answer.
@@ -222,8 +223,13 @@ class _AudioMultipleChoiceWidgetState extends State<AudioMultipleChoiceWidget> {
 ////////////////////////////////////////////////////
 class SubPageSequence extends StatefulWidget {
   final List<Question> questions; // Argument for the real answer
-
-  const SubPageSequence({super.key, required this.questions});
+  final String id;
+  final Box<dynamic> box;
+  const SubPageSequence(
+      {super.key,
+      required this.questions,
+      required this.box,
+      required this.id});
 
   @override
   State<SubPageSequence> createState() => _SubPageSequenceState();
@@ -272,6 +278,10 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         isNextActive = false;
       });
     } else {
+      setState(() {
+        widget.box.put(widget.id, true);
+      });
+
       Navigator.of(context).pop();
     }
   }

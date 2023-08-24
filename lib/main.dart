@@ -10,63 +10,11 @@ import 'pages/page_3_games.dart';
 import 'pages/page_4_dictionary.dart';
 import 'pages/page_5_settings.dart';
 
-const generalBox = 'darkModeTutorial';
-
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox(generalBox);
   runApp(const MyApp());
 }
-
-ThemeData lightTheme = ThemeData(
-  colorScheme: const ColorScheme(
-    brightness: Brightness.light,
-    primary: mainColor,
-    onPrimary: Colors.black,
-    // Colors that are not relevant to AppBar in LIGHT mode:
-    primaryContainer: Colors.grey,
-    secondary: Colors.grey,
-    secondaryContainer: Colors.grey,
-    onSecondary: Colors.grey,
-    background: Colors.grey,
-    onBackground: Colors.grey,
-    surface: Colors.grey,
-    onSurface: Colors.grey,
-    error: Colors.grey,
-    onError: Colors.grey,
-  ),
-  fontFamily: 'Nunito',
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
-    titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Nunito'),
-  ),
-);
-
-ThemeData darkTheme = ThemeData(
-  colorScheme: const ColorScheme(
-    brightness: Brightness.dark,
-    primary: mainColor,
-    onPrimary: Colors.black,
-    // Colors that are not relevant to AppBar in LIGHT mode:
-    primaryContainer: Colors.grey,
-    secondary: Colors.grey,
-    secondaryContainer: Colors.grey,
-    onSecondary: Colors.grey,
-    background: Colors.grey,
-    onBackground: Colors.grey,
-    surface: Colors.grey,
-    onSurface: Colors.grey,
-    error: Colors.grey,
-    onError: Colors.grey,
-  ),
-  fontFamily: 'Nunito',
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
-    titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
-  ),
-);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -170,3 +118,53 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
+ThemeData lightTheme = ThemeData(
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: mainColor,
+    onPrimary: Colors.black,
+    // Colors that are not relevant to AppBar in LIGHT mode:
+    primaryContainer: Colors.grey,
+    secondary: Colors.grey,
+    secondaryContainer: Colors.grey,
+    onSecondary: Colors.grey,
+    background: Colors.grey,
+    onBackground: Colors.grey,
+    surface: Colors.grey,
+    onSurface: Colors.grey,
+    error: Colors.grey,
+    onError: Colors.grey,
+  ),
+  fontFamily: 'Nunito',
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Nunito'),
+  ),
+);
+
+ThemeData darkTheme = ThemeData(
+  colorScheme: const ColorScheme(
+    brightness: Brightness.dark,
+    primary: mainColor,
+    onPrimary: Colors.black,
+    // Colors that are not relevant to AppBar in LIGHT mode:
+    primaryContainer: Colors.grey,
+    secondary: Colors.grey,
+    secondaryContainer: Colors.grey,
+    onSecondary: Colors.grey,
+    background: Colors.grey,
+    onBackground: Colors.grey,
+    surface: Colors.grey,
+    onSurface: Colors.grey,
+    error: Colors.grey,
+    onError: Colors.grey,
+  ),
+  fontFamily: 'Nunito',
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+    titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+    bodyMedium: TextStyle(fontSize: 14, fontFamily: 'Hind'),
+  ),
+);
