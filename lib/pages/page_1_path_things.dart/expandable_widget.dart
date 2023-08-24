@@ -62,18 +62,16 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _toggleExpanded,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: widget.color,
-                          foregroundColor: secondaryColor),
-                      child: Text(widget.title),
-                    ),
+                  ElevatedButton(
+                    onPressed: _toggleExpanded,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: widget.color,
+                        foregroundColor: secondaryColor),
+                    child: Text(widget.title),
                   ),
                   Text(finished ? 'FINISHED' : 'NOT FINISHED')
                 ],
