@@ -61,7 +61,7 @@ List<SubSection> subsections(Box<dynamic> box) {
         title: 'Lesson',
         color: color2,
         description: 'SECOND AUDIO LESSON',
-        assetSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+        assetSource: 'wild-jams-SBA-346689705.mp3',
         box: box,
         id: '2al',
       ),

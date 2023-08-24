@@ -68,16 +68,42 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
                   backgroundColor: widget.color,
                   foregroundColor: secondaryColor,
                 ),
-                child: Row(
-                  children: [
-                    Icon(finished
-                        ? Icons.check_box_outlined
-                        : Icons.check_box_outline_blank),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Text(widget.title),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(finished
+                              ? Icons.check_box_outlined
+                              : Icons.check_box_outline_blank),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Text(widget.title),
+                        ],
+                      ),
+                      const Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.multitrack_audio,
+                              size: 50,
+                            ),
+                            Icon(
+                              Icons.play_circle_outline_outlined,
+                              size: 50,
+                            ),
+                            Icon(
+                              Icons.multitrack_audio,
+                              size: 50,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               if (_isExpanded)
