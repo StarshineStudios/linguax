@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_test2/constants.dart';
+
+import 'package:hive_flutter/hive_flutter.dart';
 
 class AudioWidget extends StatefulWidget {
-  final String
-      assetSource; //a string that tell the location of the audio RELATIVE to the assets folder
-  const AudioWidget({super.key, required this.assetSource});
+  //a string that tell the location of the audio RELATIVE to the assets folder
+  final String assetSource;
+  final String title;
+  final String id;
+  final Box<dynamic> box;
+  const AudioWidget({
+    super.key,
+    required this.assetSource,
+    required this.box,
+    required this.id,
+    required this.title,
+  });
 
   @override
   State<AudioWidget> createState() => _AudioWidgetState();
 }
 
 class _AudioWidgetState extends State<AudioWidget> {
-  bool isPlaying = false;
+  bool isPlaying = true;
   late final AudioPlayer player;
   late final AssetSource path;
 
@@ -22,6 +34,7 @@ class _AudioWidgetState extends State<AudioWidget> {
   void initState() {
     initPlayer();
     super.initState();
+    player.play(path);
   }
 
   @override
@@ -47,7 +60,8 @@ class _AudioWidgetState extends State<AudioWidget> {
     //for when audio ends
     player.onPlayerComplete.listen((_) {
       setState(() => _position = _duration);
-      Navigator.of(context).pop(); //goes back.
+      widget.box.put(widget.id, true);
+      Navigator.of(context).pop(); //goes back when done
     });
   }
 
@@ -86,12 +100,28 @@ class _AudioWidgetState extends State<AudioWidget> {
         false;
   }
 
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes);
+    final seconds = twoDigits(duration.inSeconds);
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Question Pages')),
+        appBar: AppBar(
+          backgroundColor: mainColor,
+          foregroundColor: secondaryColor,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,14 +132,14 @@ class _AudioWidgetState extends State<AudioWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text('EXAMPLE TEXT'),
+                  Text(widget.title),
                   const SizedBox(
                     height: 16,
                   ),
                   Slider(
-                    value: _position.inSeconds.toDouble(),
+                    value: _position.inMicroseconds.toDouble(),
                     onChanged: (value) async {
-                      await player.seek(Duration(seconds: value.toInt()));
+                      await player.seek(Duration(microseconds: value.toInt()));
                       //optional, I make it resume when the thing is scrubbbed
                       //as of now it does not work FIND OUT WHY!!!!!!!
                       // setState(() async {
@@ -118,14 +148,15 @@ class _AudioWidgetState extends State<AudioWidget> {
                       // });
                     },
                     min: 0,
-                    max: _duration.inSeconds.toDouble(),
+                    max: _duration.inMicroseconds.toDouble(),
                     inactiveColor: Colors.grey,
-                    activeColor: Colors.red,
+                    activeColor: mainColor,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(_duration.toString()), //fix later!
+                      Text(formatTime(_position)),
+                      Text(formatTime(_duration)),
                     ],
                   ),
                   const SizedBox(
@@ -136,10 +167,15 @@ class _AudioWidgetState extends State<AudioWidget> {
                     children: [
                       InkWell(
                         onTap: () {
-                          player.seek(
-                              Duration(seconds: _position.inSeconds - 10));
+                          player.seek(Duration(
+                              microseconds:
+                                  _position.inMicroseconds - 10 * 1000000));
                         },
-                        child: Image.asset('assets/tenBack.png'),
+                        child: const Icon(
+                          Icons.replay_10,
+                          color: mainColor,
+                          size: 100,
+                        ),
                       ),
                       const SizedBox(
                         width: 16,
@@ -148,7 +184,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                         onTap: playPause,
                         child: Icon(
                           isPlaying ? Icons.pause_circle : Icons.play_circle,
-                          color: Colors.red,
+                          color: mainColor,
                           size: 100,
                         ),
                       ),
@@ -157,10 +193,15 @@ class _AudioWidgetState extends State<AudioWidget> {
                       ),
                       InkWell(
                         onTap: () {
-                          player.seek(
-                              Duration(seconds: _position.inSeconds + 10));
+                          player.seek(Duration(
+                              microseconds:
+                                  _position.inMicroseconds + 10 * 1000000));
                         },
-                        child: Image.asset('assets/tenForward.png'),
+                        child: const Icon(
+                          Icons.forward_10,
+                          color: mainColor,
+                          size: 100,
+                        ),
                       ),
                     ],
                   )

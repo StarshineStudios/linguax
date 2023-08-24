@@ -7,18 +7,22 @@ import 'package:hive_flutter/hive_flutter.dart';
 //const generalBox = 'darkModeTutorial';
 
 class PagePath extends StatelessWidget {
-  const PagePath({Key? key}) : super(key: key);
+  final Box<dynamic> box;
+  const PagePath({Key? key, required this.box}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var darkMode = box.get('darkMode', defaultValue: false);
+
     return ValueListenableBuilder(
       valueListenable: Hive.box(generalBox).listenable(),
       builder: (context, box, widget) {
         return Scaffold(
-          backgroundColor: secondaryColor,
+          backgroundColor: darkMode ? darkColor : secondaryColor,
           appBar: AppBar(
+            backgroundColor: mainColor,
             title: const Text(
-              'Path',
+              'Course',
               style: TextStyle(color: secondaryColor),
             ),
           ),

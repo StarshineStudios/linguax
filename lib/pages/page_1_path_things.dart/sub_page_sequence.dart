@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test2/constants.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -220,7 +221,9 @@ class _AudioMultipleChoiceWidgetState extends State<AudioMultipleChoiceWidget> {
   }
 }
 
-////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 class SubPageSequence extends StatefulWidget {
   final List<Question> questions; // Argument for the real answer
   final String id;
@@ -297,7 +300,10 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Question Pages')),
+        appBar: AppBar(
+          backgroundColor: mainColor,
+          foregroundColor: secondaryColor,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

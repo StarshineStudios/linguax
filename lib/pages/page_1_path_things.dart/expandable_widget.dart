@@ -60,21 +60,25 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
         bool finished = widget.box.get(widget.id, defaultValue: false);
 
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: _toggleExpanded,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: widget.color,
-                        foregroundColor: secondaryColor),
-                    child: Text(widget.title),
-                  ),
-                  Text(finished ? 'FINISHED' : 'NOT FINISHED')
-                ],
+              ElevatedButton(
+                onPressed: _toggleExpanded,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: widget.color,
+                    foregroundColor: secondaryColor),
+                child: Row(
+                  children: [
+                    Icon(finished
+                        ? Icons.check_box_outlined
+                        : Icons.check_box_outline_blank),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Text(widget.title),
+                  ],
+                ),
               ),
               if (_isExpanded)
                 Column(
@@ -100,14 +104,21 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                             ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all(secondaryColor),
+                                    MaterialStateProperty.all(mainColor),
                                 padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(1)),
                               ),
                               onPressed: () => _openSubPage(context),
-                              child: Text(
-                                finished ? 'Repeat lesson' : 'Begin',
-                                style: TextStyle(color: widget.color),
+                              child: Center(
+                                widthFactor: 1.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    finished ? 'Repeat lesson' : 'Begin',
+                                    style:
+                                        const TextStyle(color: secondaryColor),
+                                  ),
+                                ),
                               ),
                             ),
                           ],

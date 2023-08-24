@@ -5,9 +5,9 @@ import 'constants.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'pages/page_1_path.dart';
-import 'pages/page_2_notes.dart';
-import 'pages/page_3_games.dart';
-import 'pages/page_4_dictionary.dart';
+// import 'pages/page_2_notes.dart';
+// import 'pages/page_3_games.dart';
+// import 'pages/page_4_dictionary.dart';
 import 'pages/page_5_settings.dart';
 
 void main() async {
@@ -53,10 +53,12 @@ class _MainPageState extends State<MainPage> {
       valueListenable: Hive.box(generalBox).listenable(),
       builder: (context, box, widget) {
         List<Widget> pages = [
-          const PagePath(),
-          const PageNotes(),
-          const PageGames(),
-          const PageDictionary(),
+          PagePath(
+            box: box,
+          ),
+          // const PageNotes(),
+          // const PageGames(),
+          // const PageDictionary(),
           PageSettings(box: box),
         ];
         var darkMode = box.get('darkMode', defaultValue: false);
@@ -91,20 +93,20 @@ class _MainPageState extends State<MainPage> {
                 tabs: const [
                   GButton(
                     icon: Icons.home,
-                    text: 'Path',
+                    text: 'Course',
                   ),
-                  GButton(
-                    icon: Icons.book,
-                    text: 'Notes',
-                  ),
-                  GButton(
-                    icon: Icons.games,
-                    text: 'Games',
-                  ),
-                  GButton(
-                    icon: Icons.library_books,
-                    text: 'Dictionary',
-                  ),
+                  // GButton(
+                  //   icon: Icons.book,
+                  //   text: 'Notes',
+                  // ),
+                  // GButton(
+                  //   icon: Icons.games,
+                  //   text: 'Games',
+                  // ),
+                  // GButton(
+                  //   icon: Icons.library_books,
+                  //   text: 'Dictionary',
+                  // ),
                   GButton(
                     icon: Icons.settings,
                     text: 'Settings',

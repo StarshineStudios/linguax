@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../pages/page_1_path_things.dart/audio_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,21 +15,13 @@ class MyApp extends StatelessWidget {
         body: const Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AudioWidget(
-                assetSource: 'speaking-eight-female-SBA-300282962.mp3',
-              )
-            ],
+            children: [],
           ),
         ),
       ),
     );
   }
 }
-
-
-
-
 
 ///////////////////////////////////////////////////////////////////////
 

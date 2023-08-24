@@ -10,12 +10,14 @@ class SubSection extends StatelessWidget {
 
   final AudioLessonButton audioLessonButton;
   final List<ExpandableWidget> expandableWidgets;
+  final String imagePath;
 
   const SubSection({
     required this.title,
     this.sectionColor = mainColor, // Default background color
     required this.audioLessonButton,
     required this.expandableWidgets,
+    required this.imagePath,
     Key? key,
   }) : super(key: key);
 
@@ -23,30 +25,46 @@ class SubSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100), color: sectionColor),
-            child: Center(
-              child: Text(
-                title,
-                style: const TextStyle(
-                    fontSize: 24, color: secondaryColor, fontFamily: 'Nunito'),
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15),
+              Container(
+                decoration: const BoxDecoration(
+                    //color: Colors.black,
+                    ),
+                child: Center(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 24,
+                        color: secondaryColor,
+                        fontFamily: 'Nunito'),
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(height: 60),
+              Center(
+                child: audioLessonButton,
+              ),
+              Center(
+                child: Column(
+                  children: expandableWidgets,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          Center(
-            child: audioLessonButton,
-          ),
-          Center(
-            child: Column(
-              children: expandableWidgets,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
