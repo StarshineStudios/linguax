@@ -13,10 +13,10 @@ List<SubSection> subsections(Box<dynamic> box) {
     SubSection(
       sectionColor: color1,
       audioLessonButton: AudioLessonButton(
-        dependencies: [],
+        dependencies: const [],
         title: 'Lesson 1',
         color: color1,
-        description: 'Introduction to -are verbs',
+        imageCaption: 'Introduction to -are verbs',
         audioSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
         imageSource: 'assets/s3___eu-west-1_dlcs-storage_2_8_V0044790.jpg',
         box: box,
@@ -24,7 +24,7 @@ List<SubSection> subsections(Box<dynamic> box) {
       ),
       expandableWidgets: [
         ExpandableWidget(
-          dependencies: ['1al'],
+          dependencies: const ['1al'],
           color: color1,
           title: 'Reading Excersise',
           description: 'Description 1',
@@ -54,7 +54,7 @@ List<SubSection> subsections(Box<dynamic> box) {
           ],
         ),
         ExpandableWidget(
-          dependencies: ['11'],
+          dependencies: const ['11'],
           color: color1,
           title: 'Listening Excersise',
           description: 'Description 2',
@@ -72,10 +72,10 @@ List<SubSection> subsections(Box<dynamic> box) {
     SubSection(
       sectionColor: color2,
       audioLessonButton: AudioLessonButton(
-        dependencies: ['1al', '11', '12'],
+        dependencies: const ['1al', '11', '12'],
         title: 'Lesson 2',
         color: color2,
-        description: 'SECOND AUDIO LESSON',
+        imageCaption: 'SECOND AUDIO LESSON',
         audioSource: 'wild-jams-SBA-346689705.mp3',
         imageSource:
             'assets/640px-Cole_Thomas_The_Consummation_The_Course_of_the_Empire_1836.jpg',
@@ -84,7 +84,7 @@ List<SubSection> subsections(Box<dynamic> box) {
       ),
       expandableWidgets: [
         ExpandableWidget(
-          dependencies: ['2al'],
+          dependencies: const ['2al'],
           color: color2,
           title: 'Listening Excersise',
           description: 'Description 1',
@@ -112,7 +112,7 @@ List<SubSection> subsections(Box<dynamic> box) {
           ],
         ),
         ExpandableWidget(
-          dependencies: ['21'],
+          dependencies: const ['21'],
           color: color2,
           title: 'Writing Excersise',
           description: 'Description 2',
@@ -130,10 +130,10 @@ List<SubSection> subsections(Box<dynamic> box) {
     SubSection(
       sectionColor: color2,
       audioLessonButton: AudioLessonButton(
-        dependencies: ['2al', '21', '22'],
+        dependencies: const ['2al', '21', '22'],
         title: 'Lesson 3',
         color: color2,
-        description: 'SECOND AUDIO LESSON',
+        imageCaption: 'SECOND AUDIO LESSON',
         audioSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
         imageSource: 'assets/ddac797ee160d91a5e605ac02b4bca8edbcfd87a.jpg',
         box: box,
@@ -141,7 +141,7 @@ List<SubSection> subsections(Box<dynamic> box) {
       ),
       expandableWidgets: [
         ExpandableWidget(
-          dependencies: ['3al'],
+          dependencies: const ['3al'],
           color: color2,
           title: 'Listening Excersise',
           description: 'Description 1',
@@ -169,7 +169,7 @@ List<SubSection> subsections(Box<dynamic> box) {
           ],
         ),
         ExpandableWidget(
-          dependencies: ['31'],
+          dependencies: const ['31'],
           color: color2,
           title: 'Writing Excersise',
           description: 'Description 2',

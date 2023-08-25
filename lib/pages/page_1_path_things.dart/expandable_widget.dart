@@ -33,7 +33,6 @@ class ExpandableWidget extends StatefulWidget {
 
 class _ExpandableWidgetState extends State<ExpandableWidget> {
   bool _isExpanded = false;
-
   void _toggleExpanded() {
     setState(() {
       _isExpanded = !_isExpanded;
@@ -56,15 +55,15 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
       valueListenable: Hive.box(generalBox).listenable(),
       builder: (BuildContext context, dynamic value, Widget? child) {
         bool finished =
-            widget.box.get(widget.id + 'finished', defaultValue: false);
+            widget.box.get('${widget.id}finished', defaultValue: false);
 
-        double _accuracy =
-            widget.box.get(widget.id + 'accuracy', defaultValue: 0);
+        double accuracy =
+            widget.box.get('${widget.id}accuracy', defaultValue: 0.0);
 
         List<bool> dependencyStatus = [];
         for (int i = 0; i < widget.dependencies.length; i++) {
           bool status = widget.box
-              .get('${widget.dependencies[i]}finished', defaultValue: 0);
+              .get('${widget.dependencies[i]}finished', defaultValue: false);
           dependencyStatus.add(status);
         }
 
@@ -75,13 +74,14 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
           }
         }
 
-        if (_accuracy > 1) {
-          _accuracy = 1;
+        if (accuracy > 1) {
+          accuracy = 1;
         }
 
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
             alignment: Alignment.bottomRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +131,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                 CircularPercentIndicator(
                   radius: 60,
                   lineWidth: 10,
-                  percent: _accuracy,
+                  percent: accuracy,
                   progressColor: mainColor,
                   backgroundColor: mainColorFaded,
                   circularStrokeCap: CircularStrokeCap.round,

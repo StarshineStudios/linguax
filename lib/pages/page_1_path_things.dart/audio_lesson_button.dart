@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test2/pages/page_1_path_things.dart/audio_widget.dart';
-import 'triangle.dart';
+
 import '../../constants.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:percent_indicator/percent_indicator.dart';
+
 class AudioLessonButton extends StatefulWidget {
   final String title;
   final Color color;
-  final String description;
+  final String imageCaption;
   final String audioSource;
   final String imageSource;
   final Box<dynamic> box;
@@ -19,7 +21,7 @@ class AudioLessonButton extends StatefulWidget {
     super.key,
     required this.title,
     required this.color,
-    required this.description,
+    required this.imageCaption,
     required this.audioSource,
     required this.box,
     required this.id,
@@ -32,7 +34,7 @@ class AudioLessonButton extends StatefulWidget {
 }
 
 class _AudioLessonButtonState extends State<AudioLessonButton> {
-  bool _isExpanded = false;
+  //bool _isExpanded = false;
 
   // void _toggleExpanded() {
   //   setState(() {
@@ -47,6 +49,8 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
         id: widget.id,
         box: widget.box,
         title: widget.title,
+        imageSource: widget.imageSource,
+        imageCaption: widget.imageCaption,
       ), // Display an audio widget
     ));
   }
@@ -59,12 +63,14 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
         valueListenable: Hive.box(generalBox).listenable(),
         builder: (BuildContext context, dynamic value, Widget? child) {
           bool finished =
-              widget.box.get(widget.id + 'finished', defaultValue: false);
+              widget.box.get('${widget.id}finished', defaultValue: false);
+          double percent =
+              widget.box.get('${widget.id}percentDone', defaultValue: 0.0);
 
           List<bool> dependencyStatus = [];
           for (int i = 0; i < widget.dependencies.length; i++) {
             bool status = widget.box
-                .get('${widget.dependencies[i]}finished', defaultValue: 0);
+                .get('${widget.dependencies[i]}finished', defaultValue: false);
             dependencyStatus.add(status);
           }
 
@@ -80,18 +86,17 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
               borderRadius: BorderRadius.circular(defaultRadius),
               color: locked ? mainColorFaded : mainColor,
             ),
-            padding: EdgeInsets.all(defaultPadding),
+            padding: const EdgeInsets.all(defaultPadding),
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(widget.imageSource),
                   colorFilter: locked
-                      ? new ColorFilter.mode(
+                      ? const ColorFilter.mode(
                           Colors.grey,
                           BlendMode.saturation,
                         )
-                      : ColorFilter.mode(
-                          Color.fromARGB(0, 0, 0, 0), BlendMode.screen),
+                      : const ColorFilter.mode(mainColor, BlendMode.softLight),
 
                   ///makes the image black and white if locked
                   fit: BoxFit.cover,
@@ -107,17 +112,26 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           widget.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: secondaryColor,
                               fontSize: 35,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 33, right: 33),
+                        padding: const EdgeInsets.only(bottom: 33, right: 33),
                         alignment: Alignment.centerRight,
-                        child: NiceButton(
+                        child: CircularPercentIndicator(
+                          radius: 60,
+                          lineWidth: 10,
+                          percent: percent,
+                          progressColor: mainColor,
+                          backgroundColor: mainColorFaded,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          center: NiceButton(
                             active: !locked,
+                            borderRadius: 100,
+                            onPressed: () => _openSubPage(context),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
@@ -126,12 +140,12 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
                                     : (finished
                                         ? Icons.check
                                         : Icons.play_arrow),
-                                size: 55,
+                                size: 66,
                                 color: secondaryColor,
                               ),
                             ),
-                            borderRadius: 100,
-                            onPressed: () => _openSubPage(context)),
+                          ),
+                        ),
                       )
                     ],
                   ),

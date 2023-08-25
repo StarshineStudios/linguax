@@ -255,19 +255,28 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            backgroundColor: mainColorBackground,
             title: const Text('Warning'),
             content: const Text(
-                'All progress will be lost if you go back. Do you want to continue?'),
+                'All Progress will be lost. Do you really want to go back?'),
             actions: [
-              TextButton(
+              NiceButton(
                 onPressed: () =>
                     Navigator.of(context).pop(true), // Allow navigation back
-                child: const Text('Yes'),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                  child: Text('Yes'),
+                ),
               ),
-              TextButton(
+              NiceButton(
                 onPressed: () =>
                     Navigator.of(context).pop(false), // Stay on the page
-                child: const Text('No'),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                  child: Text('No'),
+                ),
               ),
             ],
           ),
@@ -285,9 +294,9 @@ class _SubPageSequenceState extends State<SubPageSequence> {
       });
     } else {
       setState(() {
-        widget.box.put(widget.id + 'finished', true);
+        widget.box.put('${widget.id}finished', true);
         widget.box
-            .put(widget.id + 'accuracy', correct / widget.questions.length);
+            .put('${widget.id}accuracy', correct / widget.questions.length);
       });
 
       Navigator.of(context).pop();

@@ -10,12 +10,17 @@ class AudioWidget extends StatefulWidget {
   final String title;
   final String id;
   final Box<dynamic> box;
+  final String imageCaption;
+
+  final String imageSource;
   const AudioWidget({
     super.key,
     required this.assetSource,
     required this.box,
     required this.id,
     required this.title,
+    required this.imageSource,
+    required this.imageCaption,
   });
 
   @override
@@ -23,18 +28,22 @@ class AudioWidget extends StatefulWidget {
 }
 
 class _AudioWidgetState extends State<AudioWidget> {
-  bool isPlaying = true;
+  bool isPlaying = false;
   late final AudioPlayer player;
   late final AssetSource path;
 
   Duration _duration = const Duration();
+
   Duration _position = const Duration();
+
+  int count = 0;
 
   @override
   void initState() {
     initPlayer();
     super.initState();
-    player.play(path);
+    playPause();
+    //player.play(path); //start the thing
   }
 
   @override
@@ -47,9 +56,31 @@ class _AudioWidgetState extends State<AudioWidget> {
     player = AudioPlayer();
     path = AssetSource(widget.assetSource);
 
-    //for duration change
-    player.onDurationChanged.listen((Duration d) {
+    bool wasFinished =
+        widget.box.get('${widget.id}finished', defaultValue: false);
+
+    double percentDone =
+        widget.box.get('${widget.id}percentDone', defaultValue: 0.0);
+
+    //for duration change bc it may chnage many times during setup
+    player.onDurationChanged.listen((Duration d) async {
       setState(() => _duration = d);
+
+      int startPositionMicroseconds;
+
+      //if it was restarted, then just start at the begining
+      if (wasFinished) {
+        //widget.box.put('${widget.id}finished', false);
+        /*this is commented out because it was bad and 
+        it make it so that rewatching it would make it 
+        not finished therefore making the lessons dependent 
+        on it locked*/
+        startPositionMicroseconds = 0;
+      } else {
+        startPositionMicroseconds =
+            (_duration.inMicroseconds * percentDone).toInt();
+      }
+      player.seek(Duration(microseconds: startPositionMicroseconds));
     });
 
     //for position change
@@ -60,7 +91,9 @@ class _AudioWidgetState extends State<AudioWidget> {
     //for when audio ends
     player.onPlayerComplete.listen((_) {
       setState(() => _position = _duration);
-      widget.box.put(widget.id + 'finished', true);
+      widget.box.put('${widget.id}finished', true);
+
+      widget.box.put('${widget.id}percentDone', 1); //sets it as 100 percent
       Navigator.of(context).pop(); //goes back when done
     });
   }
@@ -80,19 +113,33 @@ class _AudioWidgetState extends State<AudioWidget> {
     return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            backgroundColor: mainColorBackground,
             title: const Text('Warning'),
             content: const Text(
                 'We reccomend finishing an audio lesson in one sitting. Do you really want to go back?'),
             actions: [
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pop(true), // Allow navigation back
-                child: const Text('Yes'),
+              NiceButton(
+                onPressed: () {
+                  widget.box.put('${widget.id}percentDone',
+                      _position.inMicroseconds / _duration.inMicroseconds);
+
+                  Navigator.of(context).pop(true);
+                }, // Allow navigation back
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                  child: Text('Yes'),
+                ),
               ),
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pop(false), // Stay on the page
-                child: const Text('No'),
+              NiceButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                }, // Stay on the page
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                  child: Text('No'),
+                ),
               ),
             ],
           ),
@@ -120,6 +167,7 @@ class _AudioWidgetState extends State<AudioWidget> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        backgroundColor: mainColorBackground,
         appBar: AppBar(
           backgroundColor: mainColor,
           foregroundColor: secondaryColor,
@@ -134,79 +182,167 @@ class _AudioWidgetState extends State<AudioWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(widget.title),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      color: mainColor,
+                    ),
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(widget.imageSource),
+                          colorFilter: const ColorFilter.mode(
+                              mainColor, BlendMode.softLight),
+
+                          ///makes the image black and white if locked
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 200,
+                              ),
+                              const Text(
+                                'Latin',
+                                style: TextStyle(
+                                    color: secondaryColor,
+                                    fontSize: 45,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.title,
+                                style: const TextStyle(
+                                    color: secondaryColor,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 16,
                   ),
-                  Slider(
-                    value: _position.inMicroseconds.toDouble(),
-                    onChanged: (value) async {
-                      await player.seek(Duration(microseconds: value.toInt()));
-                      //optional, I make it resume when the thing is scrubbbed
-                      //as of now it does not work FIND OUT WHY!!!!!!!
-                      // setState(() async {
-                      //   await player.resume();
-                      //   isPlaying = true;
-                      // });
-                    },
-                    min: 0,
-                    //some audio clips have their real time 4:00:01, and therefore this number is already greater than 4:00:00
-                    max: _duration.inMicroseconds.toDouble() + 2,
-                    inactiveColor: Colors.grey,
-                    activeColor: mainColor,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(formatTime(_position)),
-                      Text(formatTime(_duration)),
-                    ],
+                  Container(
+                    decoration: BoxDecoration(
+                        color: mainColorDarker,
+                        borderRadius: BorderRadius.circular(defaultRadius)),
+                    child: Column(
+                      children: [
+                        Slider(
+                          value: _position.inMicroseconds.toDouble(),
+                          onChanged: (value) async {
+                            await player
+                                .seek(Duration(microseconds: value.toInt()));
+
+                            //optional, I make it resume when the thing is scrubbbed
+                            //as of now it does not work FIND OUT WHY!!!!!!!
+                            // setState(() async {
+                            //   await player.resume();
+                            //   isPlaying = true;
+                            // });
+                          },
+                          min: 0,
+                          //some audio clips have their real time 4:00:01, and therefore this number is already greater than 4:00:00
+                          max: _duration.inMicroseconds.toDouble() + 2,
+                          inactiveColor: Colors.grey,
+                          activeColor: mainColor,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25, right: 25),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(formatTime(_position)),
+                              Text(formatTime(_duration)),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            NiceButton(
+                              borderRadius: 100,
+                              onPressed: () {
+                                player.seek(Duration(
+                                    microseconds: _position.inMicroseconds -
+                                        10 * 1000000));
+                              },
+                              child: const Icon(
+                                Icons.replay_10,
+                                color: secondaryColor,
+                                size: 100,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            NiceButton(
+                              borderRadius: 100,
+                              onPressed: playPause,
+                              child: Icon(
+                                isPlaying
+                                    ? Icons.pause_circle
+                                    : Icons.play_circle,
+                                color: secondaryColor,
+                                size: 100,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            NiceButton(
+                              borderRadius: 100,
+                              onPressed: () {
+                                player.seek(Duration(
+                                    microseconds: _position.inMicroseconds +
+                                        10 * 1000000));
+                              },
+                              child: const Icon(
+                                Icons.forward_10,
+                                color: secondaryColor,
+                                size: 100,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          player.seek(Duration(
-                              microseconds:
-                                  _position.inMicroseconds - 10 * 1000000));
-                        },
-                        child: const Icon(
-                          Icons.replay_10,
-                          color: mainColor,
-                          size: 100,
+                  Container(
+                    decoration: BoxDecoration(
+                        color: mainColorDarker,
+                        borderRadius: BorderRadius.circular(defaultRadius)),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.imageCaption,
+                              style: const TextStyle(color: secondaryColor),
+                            ),
+                            const SizedBox(
+                              height: 66,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      InkWell(
-                        onTap: playPause,
-                        child: Icon(
-                          isPlaying ? Icons.pause_circle : Icons.play_circle,
-                          color: mainColor,
-                          size: 100,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          player.seek(Duration(
-                              microseconds:
-                                  _position.inMicroseconds + 10 * 1000000));
-                        },
-                        child: const Icon(
-                          Icons.forward_10,
-                          color: mainColor,
-                          size: 100,
-                        ),
-                      ),
-                    ],
+                    ),
                   )
                 ],
               ),

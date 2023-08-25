@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 const mainColor = Color.fromARGB(255, 163, 84, 255);
 const mainColorDarker = Color.fromARGB(255, 92, 41, 150);
-const mainColorFaded = Color.fromARGB(255, 212, 192, 241);
+const mainColorFaded = Color.fromARGB(255, 165, 161, 171);
+const mainColorBackground = Color.fromARGB(255, 43, 24, 75);
 const darkColor = Color.fromARGB(255, 30, 29, 31);
 const secondaryColor = Color.fromARGB(255, 255, 247, 220);
 
@@ -120,8 +121,8 @@ class MyApp extends StatelessWidget {
             children: [
               NiceButton(
                 onPressed: () {},
-                child: Text('hi'),
                 borderRadius: 100,
+                child: const Text('hi'),
               )
             ],
           ),

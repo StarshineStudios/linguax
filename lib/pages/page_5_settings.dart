@@ -12,29 +12,33 @@ class PageSettings extends StatelessWidget {
     var darkMode = box.get('darkMode', defaultValue: false);
 
     void resetProgress() {
-      box.put('1al' + 'finished', false);
-      box.put('11' + 'finished', false);
-      box.put('12' + 'finished', false);
+      box.put('1al' 'percentDone', 0.0);
 
-      box.put('1al' + 'accuracy', 0);
-      box.put('11' + 'accuracy', 0);
-      box.put('12' + 'accuracy', 0);
+      box.put('1al' 'finished', false);
+      box.put('11' 'finished', false);
+      box.put('12' 'finished', false);
+
+      box.put('1al' 'accuracy', 0);
+      box.put('11' 'accuracy', 0);
+      box.put('12' 'accuracy', 0);
 ///////////////////////
-      box.put('2al' + 'finished', false);
-      box.put('21' + 'finished', false);
-      box.put('22' + 'finished', false);
+      box.put('2al' 'percentDone', 0.0);
+      box.put('2al' 'finished', false);
+      box.put('21' 'finished', false);
+      box.put('22' 'finished', false);
 
-      box.put('2al' + 'accuracy', 0);
-      box.put('21' + 'accuracy', 0);
-      box.put('22' + 'accuracy', 0);
-///////////////////////
-      box.put('3al' + 'finished', false);
-      box.put('31' + 'finished', false);
-      box.put('32' + 'finished', false);
+      box.put('2al' 'accuracy', 0);
+      box.put('21' 'accuracy', 0);
+      box.put('22' 'accuracy', 0);
+///////////////////////\
+      box.put('3al' 'percentDone', 0.0);
+      box.put('3al' 'finished', false);
+      box.put('31' 'finished', false);
+      box.put('32' 'finished', false);
 
-      box.put('3al' + 'accuracy', 0);
-      box.put('31' + 'accuracy', 0);
-      box.put('32' + 'accuracy', 0);
+      box.put('3al' 'accuracy', 0);
+      box.put('31' 'accuracy', 0);
+      box.put('32' 'accuracy', 0);
     }
 
     return Scaffold(
