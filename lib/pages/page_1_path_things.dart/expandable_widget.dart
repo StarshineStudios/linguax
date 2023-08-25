@@ -4,6 +4,7 @@ import '../../constants.dart';
 import 'sub_page_sequence.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class ExpandableWidget extends StatefulWidget {
   final String title;
@@ -12,6 +13,8 @@ class ExpandableWidget extends StatefulWidget {
   final Box<dynamic> box;
   final String id;
   final List<Question> questions;
+  final IconData icon;
+  final List<String> dependencies;
 
   const ExpandableWidget(
       {super.key,
@@ -20,6 +23,8 @@ class ExpandableWidget extends StatefulWidget {
       required this.description,
       required this.questions,
       required this.id,
+      this.icon = Icons.create,
+      required this.dependencies,
       required this.box});
 
   @override
@@ -28,13 +33,6 @@ class ExpandableWidget extends StatefulWidget {
 
 class _ExpandableWidgetState extends State<ExpandableWidget> {
   bool _isExpanded = false;
-  //late bool finished;
-
-  // @override
-  // void initState() {
-  //   finished = widget.box.get(widget.id, defaultValue: false);
-  //   super.initState();
-  // }
 
   void _toggleExpanded() {
     setState(() {
@@ -57,77 +55,144 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
     return ValueListenableBuilder(
       valueListenable: Hive.box(generalBox).listenable(),
       builder: (BuildContext context, dynamic value, Widget? child) {
-        bool finished = widget.box.get(widget.id, defaultValue: false);
+        bool finished =
+            widget.box.get(widget.id + 'finished', defaultValue: false);
+
+        double _accuracy =
+            widget.box.get(widget.id + 'accuracy', defaultValue: 0);
+
+        List<bool> dependencyStatus = [];
+        for (int i = 0; i < widget.dependencies.length; i++) {
+          bool status = widget.box
+              .get('${widget.dependencies[i]}finished', defaultValue: 0);
+          dependencyStatus.add(status);
+        }
+
+        bool locked = false;
+        for (int i = 0; i < dependencyStatus.length; i++) {
+          if (dependencyStatus[i] == false) {
+            locked = true;
+          }
+        }
+
+        if (_accuracy > 1) {
+          _accuracy = 1;
+        }
 
         return Padding(
-          padding: const EdgeInsets.all(0),
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: _toggleExpanded,
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.color,
-                    foregroundColor: secondaryColor),
-                child: Row(
-                  children: [
-                    Icon(finished
-                        ? Icons.check_box_outlined
-                        : Icons.check_box_outline_blank),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Text(widget.title),
-                  ],
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // if (_isExpanded)
+                //   Row(
+                //     children: [
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           color: widget.color,
+                //           border: Border.all(width: 0, color: widget.color),
+                //         ),
+                //         padding: const EdgeInsets.all(10),
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.center,
+                //           children: [
+                //             Text(
+                //               widget.description,
+                //               style: const TextStyle(
+                //                   color: secondaryColor, fontFamily: 'Nunito'),
+                //             ),
+                //             NiceButton(
+                //               onPressed: () => _openSubPage(context),
+                //               child: Padding(
+                //                 padding: const EdgeInsets.all(10.0),
+                //                 child: Text(
+                //                   finished ? 'Practice again' : 'Practice',
+                //                   style: const TextStyle(color: secondaryColor),
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //       RotatedBox(
+                //         quarterTurns: 1,
+                //         child: TriangleClipPath(
+                //           color: widget.color,
+                //           width: 15,
+                //           height: 10,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+
+                CircularPercentIndicator(
+                  radius: 60,
+                  lineWidth: 10,
+                  percent: _accuracy,
+                  progressColor: mainColor,
+                  backgroundColor: mainColorFaded,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  center: NiceButton(
+                      active: !locked,
+                      onPressed: _toggleExpanded,
+                      borderRadius: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          locked
+                              ? Icons.lock
+                              : (finished ? Icons.check : widget.icon),
+                          size: 66,
+                          color: secondaryColor,
+                        ),
+                      )),
                 ),
-              ),
-              if (_isExpanded)
-                Column(
-                  children: [
-                    TriangleClipPath(color: widget.color),
-                    Center(
-                      child: Container(
+                if (_isExpanded)
+                  Row(
+                    children: [
+                      RotatedBox(
+                        quarterTurns: 3,
+                        child: TriangleClipPath(
+                          color: widget.color,
+                          width: 15,
+                          height: 10,
+                        ),
+                      ),
+                      Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: widget.color,
                           border: Border.all(width: 0, color: widget.color),
                         ),
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               widget.description,
                               style: const TextStyle(
                                   color: secondaryColor, fontFamily: 'Nunito'),
                             ),
-                            const SizedBox(height: 16.0),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(mainColor),
-                                padding: MaterialStateProperty.all(
-                                    const EdgeInsets.all(1)),
-                              ),
+                            NiceButton(
                               onPressed: () => _openSubPage(context),
-                              child: Center(
-                                widthFactor: 1.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    finished ? 'Repeat lesson' : 'Begin',
-                                    style:
-                                        const TextStyle(color: secondaryColor),
-                                  ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  finished ? 'Practice again' : 'Practice',
+                                  style: const TextStyle(color: secondaryColor),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-            ],
+                    ],
+                  ),
+              ],
+            ),
           ),
         );
       },

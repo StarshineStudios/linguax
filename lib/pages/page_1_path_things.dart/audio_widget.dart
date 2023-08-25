@@ -60,7 +60,7 @@ class _AudioWidgetState extends State<AudioWidget> {
     //for when audio ends
     player.onPlayerComplete.listen((_) {
       setState(() => _position = _duration);
-      widget.box.put(widget.id, true);
+      widget.box.put(widget.id + 'finished', true);
       Navigator.of(context).pop(); //goes back when done
     });
   }

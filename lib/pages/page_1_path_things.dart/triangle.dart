@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class TriangleClipPath extends StatelessWidget {
   final Color color;
+  final double width;
+  final double height;
 
   const TriangleClipPath({
     super.key,
     required this.color,
+    required this.width,
+    required this.height,
   });
 
   @override
@@ -13,8 +17,8 @@ class TriangleClipPath extends StatelessWidget {
     return ClipPath(
       clipper: TriangleClipper(),
       child: Container(
-        width: 30,
-        height: 15,
+        width: width,
+        height: height,
         color: color,
       ),
     );
@@ -36,5 +40,28 @@ class TriangleClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
+  }
+}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Multiple Choice Example')),
+        body: const Center(
+            child: TriangleClipPath(
+          color: Colors.black,
+          width: 10,
+          height: 19,
+        )),
+      ),
+    );
   }
 }

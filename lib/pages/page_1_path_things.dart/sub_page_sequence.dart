@@ -238,9 +238,12 @@ class SubPageSequence extends StatefulWidget {
   State<SubPageSequence> createState() => _SubPageSequenceState();
 }
 
+//TODO: when there are many multiple choice questions after another, the option can appear selected even if there is nothing selected.
+//Just rebuild the thing from the ground up with NiceButtons
 class _SubPageSequenceState extends State<SubPageSequence> {
   int _currentPageIndex = 0;
 
+  double correct = 0;
   //final TextEditingController _answerController = TextEditingController();
 
   bool isNextActive = false;
@@ -282,7 +285,9 @@ class _SubPageSequenceState extends State<SubPageSequence> {
       });
     } else {
       setState(() {
-        widget.box.put(widget.id, true);
+        widget.box.put(widget.id + 'finished', true);
+        widget.box
+            .put(widget.id + 'accuracy', correct / widget.questions.length);
       });
 
       Navigator.of(context).pop();
@@ -319,12 +324,16 @@ class _SubPageSequenceState extends State<SubPageSequence> {
               onPressed: () {
                 if (widget.questions[_currentPageIndex].check()) {
                   setState(() {
+                    if (_answerFeedback == '') {
+                      correct++;
+                    }
                     _answerFeedback = 'Correct';
                     isNextActive = true;
                   });
                 } else {
                   setState(() {
                     isNextActive = false; // TEMPORARY THING LJASKLJF:LADS
+
                     _answerFeedback =
                         'Incorrect. Hint: ${widget.questions[_currentPageIndex].hint()}. fsljlfas';
                   });

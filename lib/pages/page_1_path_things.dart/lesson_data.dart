@@ -11,19 +11,20 @@ List<SubSection> subsections(Box<dynamic> box) {
   Color color2 = const Color.fromARGB(150, 0, 0, 0);
   return [
     SubSection(
-      imagePath: 'assets/s3___eu-west-1_dlcs-storage_2_8_V0044790.jpg',
-      title: 'Chapter I',
       sectionColor: color1,
       audioLessonButton: AudioLessonButton(
-        title: 'Lesson',
+        dependencies: [],
+        title: 'Lesson 1',
         color: color1,
         description: 'Introduction to -are verbs',
-        assetSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+        audioSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+        imageSource: 'assets/s3___eu-west-1_dlcs-storage_2_8_V0044790.jpg',
         box: box,
         id: '1al',
       ),
       expandableWidgets: [
         ExpandableWidget(
+          dependencies: ['1al'],
           color: color1,
           title: 'Reading Excersise',
           description: 'Description 1',
@@ -35,9 +36,25 @@ List<SubSection> subsections(Box<dynamic> box) {
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
+            MultipleChoiceQuestion(
+              prompt: 'What is one plus two?',
+              correctIndex: 2,
+              options: const ['1', '2', '3', '4', '5'],
+            ),
+            MultipleChoiceQuestion(
+              prompt: 'What is one plus two?',
+              correctIndex: 2,
+              options: const ['1', '2', '3', '4', '5'],
+            ),
+            MultipleChoiceQuestion(
+              prompt: 'What is one plus two?',
+              correctIndex: 2,
+              options: const ['1', '2', '3', '4', '5'],
+            ),
           ],
         ),
         ExpandableWidget(
+          dependencies: ['11'],
           color: color1,
           title: 'Listening Excersise',
           description: 'Description 2',
@@ -53,20 +70,21 @@ List<SubSection> subsections(Box<dynamic> box) {
       ],
     ),
     SubSection(
-      imagePath:
-          'assets/640px-Cole_Thomas_The_Consummation_The_Course_of_the_Empire_1836.jpg',
-      title: 'Chapter II',
       sectionColor: color2,
       audioLessonButton: AudioLessonButton(
-        title: 'Lesson',
+        dependencies: ['1al', '11', '12'],
+        title: 'Lesson 2',
         color: color2,
         description: 'SECOND AUDIO LESSON',
-        assetSource: 'wild-jams-SBA-346689705.mp3',
+        audioSource: 'wild-jams-SBA-346689705.mp3',
+        imageSource:
+            'assets/640px-Cole_Thomas_The_Consummation_The_Course_of_the_Empire_1836.jpg',
         box: box,
         id: '2al',
       ),
       expandableWidgets: [
         ExpandableWidget(
+          dependencies: ['2al'],
           color: color2,
           title: 'Listening Excersise',
           description: 'Description 1',
@@ -94,6 +112,7 @@ List<SubSection> subsections(Box<dynamic> box) {
           ],
         ),
         ExpandableWidget(
+          dependencies: ['21'],
           color: color2,
           title: 'Writing Excersise',
           description: 'Description 2',
@@ -109,19 +128,20 @@ List<SubSection> subsections(Box<dynamic> box) {
       ],
     ),
     SubSection(
-      imagePath: 'assets/ddac797ee160d91a5e605ac02b4bca8edbcfd87a.jpg',
-      title: 'Chapter III',
       sectionColor: color2,
       audioLessonButton: AudioLessonButton(
-        title: 'Lesson',
+        dependencies: ['2al', '21', '22'],
+        title: 'Lesson 3',
         color: color2,
         description: 'SECOND AUDIO LESSON',
-        assetSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+        audioSource: 'orchestra-string-section-tune-SBA-300120703.mp3',
+        imageSource: 'assets/ddac797ee160d91a5e605ac02b4bca8edbcfd87a.jpg',
         box: box,
         id: '3al',
       ),
       expandableWidgets: [
         ExpandableWidget(
+          dependencies: ['3al'],
           color: color2,
           title: 'Listening Excersise',
           description: 'Description 1',
@@ -149,6 +169,7 @@ List<SubSection> subsections(Box<dynamic> box) {
           ],
         ),
         ExpandableWidget(
+          dependencies: ['31'],
           color: color2,
           title: 'Writing Excersise',
           description: 'Description 2',
