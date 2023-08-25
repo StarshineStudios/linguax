@@ -59,8 +59,8 @@ class _AudioWidgetState extends State<AudioWidget> {
     bool wasFinished =
         widget.box.get('${widget.id}finished', defaultValue: false);
 
-    double percentDone =
-        widget.box.get('${widget.id}percentDone', defaultValue: 0.0);
+    int previousStartPositionMicroseconds =
+        widget.box.get('${widget.id}position', defaultValue: 0);
 
     //for duration change bc it may chnage many times during setup
     player.onDurationChanged.listen((Duration d) async {
@@ -77,8 +77,7 @@ class _AudioWidgetState extends State<AudioWidget> {
         on it locked*/
         startPositionMicroseconds = 0;
       } else {
-        startPositionMicroseconds =
-            (_duration.inMicroseconds * percentDone).toInt();
+        startPositionMicroseconds = previousStartPositionMicroseconds;
       }
       player.seek(Duration(microseconds: startPositionMicroseconds));
     });
@@ -93,7 +92,8 @@ class _AudioWidgetState extends State<AudioWidget> {
       setState(() => _position = _duration);
       widget.box.put('${widget.id}finished', true);
 
-      widget.box.put('${widget.id}percentDone', 1); //sets it as 100 percent
+      widget.box.put('${widget.id}position', 1);
+      widget.box.put('${widget.id}duration', 1); //sets it as 100 percent
       Navigator.of(context).pop(); //goes back when done
     });
   }
@@ -120,8 +120,10 @@ class _AudioWidgetState extends State<AudioWidget> {
             actions: [
               NiceButton(
                 onPressed: () {
-                  widget.box.put('${widget.id}percentDone',
-                      _position.inMicroseconds / _duration.inMicroseconds);
+                  widget.box
+                      .put('${widget.id}position', _position.inMicroseconds);
+                  widget.box
+                      .put('${widget.id}duration', _duration.inMicroseconds);
 
                   Navigator.of(context).pop(true);
                 }, // Allow navigation back

@@ -65,7 +65,9 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
           bool finished =
               widget.box.get('${widget.id}finished', defaultValue: false);
           double percent =
-              widget.box.get('${widget.id}percentDone', defaultValue: 0.0);
+              widget.box.get('${widget.id}position', defaultValue: 0) /
+                  widget.box.get('${widget.id}duration', defaultValue: 1);
+          //print(0 / 0);
 
           List<bool> dependencyStatus = [];
           for (int i = 0; i < widget.dependencies.length; i++) {

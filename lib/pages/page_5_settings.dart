@@ -12,7 +12,10 @@ class PageSettings extends StatelessWidget {
     var darkMode = box.get('darkMode', defaultValue: false);
 
     void resetProgress() {
-      box.put('1al' 'percentDone', 0.0);
+      box.delete('1al' 'position');
+      box.delete(
+        '1al' 'duration',
+      );
 
       box.put('1al' 'finished', false);
       box.put('11' 'finished', false);
@@ -22,7 +25,8 @@ class PageSettings extends StatelessWidget {
       box.put('11' 'accuracy', 0);
       box.put('12' 'accuracy', 0);
 ///////////////////////
-      box.put('2al' 'percentDone', 0.0);
+      box.delete('2al' 'position');
+      box.delete('2al' 'duration');
       box.put('2al' 'finished', false);
       box.put('21' 'finished', false);
       box.put('22' 'finished', false);
@@ -31,7 +35,8 @@ class PageSettings extends StatelessWidget {
       box.put('21' 'accuracy', 0);
       box.put('22' 'accuracy', 0);
 ///////////////////////\
-      box.put('3al' 'percentDone', 0.0);
+      box.delete('3al' 'position');
+      box.delete('3al' 'duration');
       box.put('3al' 'finished', false);
       box.put('31' 'finished', false);
       box.put('32' 'finished', false);
