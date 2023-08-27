@@ -314,60 +314,75 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        backgroundColor: mainColorBackground,
         appBar: AppBar(
           backgroundColor: mainColor,
           foregroundColor: secondaryColor,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(widget.questions[_currentPageIndex].prompt),
-            widget.questions[_currentPageIndex],
-
-            // Text(questionAnswers[_currentPageIndex].questionText),
-            // const SizedBox(height: 16.0),
-
-            // const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                if (widget.questions[_currentPageIndex].check()) {
-                  setState(() {
-                    if (_answerFeedback == '') {
-                      correct++;
-                    }
-                    _answerFeedback = 'Correct';
-                    isNextActive = true;
-                  });
-                } else {
-                  setState(() {
-                    isNextActive = false; // TEMPORARY THING LJASKLJF:LADS
-
-                    _answerFeedback =
-                        'Incorrect. Hint: ${widget.questions[_currentPageIndex].hint()}. fsljlfas';
-                  });
-                }
-              },
-              child: const Text('Check'),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              _answerFeedback,
-              style: TextStyle(
-                color: _answerFeedback == 'Correct' ? Colors.green : Colors.red,
-                fontWeight: FontWeight.bold,
+        body: Padding(
+          padding:
+              const EdgeInsets.only(bottom: 24, top: 24, left: 55, right: 55),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.questions[_currentPageIndex].prompt,
+                style: TextStyle(fontSize: 27),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: isNextActive
-                  ? () {
-                      _nextPage();
-                    }
-                  : null,
-              child: const Text('Next'),
-            ),
-          ],
+              widget.questions[_currentPageIndex],
+
+              // Text(questionAnswers[_currentPageIndex].questionText),
+              // const SizedBox(height: 16.0),
+
+              // const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (widget.questions[_currentPageIndex].check()) {
+                    setState(() {
+                      if (_answerFeedback == '') {
+                        correct++;
+                      }
+                      _answerFeedback = 'Correct';
+                      isNextActive = true;
+                    });
+                  } else {
+                    setState(() {
+                      isNextActive = false; // TEMPORARY THING LJASKLJF:LADS
+
+                      _answerFeedback =
+                          'Incorrect. Hint: ${widget.questions[_currentPageIndex].hint()}. fsljlfas';
+                    });
+                  }
+                },
+                child: const Text(
+                  'Check',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                _answerFeedback,
+                style: TextStyle(
+                  color:
+                      _answerFeedback == 'Correct' ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: isNextActive
+                    ? () {
+                        _nextPage();
+                      }
+                    : null,
+                child: const Text(
+                  'Next',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
