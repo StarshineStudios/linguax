@@ -27,7 +27,9 @@ class PagePath extends StatelessWidget {
             ),
           ),
           body: ListView(
-            children: subsections(box),
+            children: subsections(
+              box,
+            ),
           ),
         );
       },

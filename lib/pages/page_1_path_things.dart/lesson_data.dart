@@ -5,8 +5,12 @@ import 'sub_page_sequence.dart';
 import 'subsection.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'question.dart';
 
-List<SubSection> subsections(Box<dynamic> box) {
+List<SubSection> subsections(
+  Box<dynamic> box,
+  //Function(String) updateParentVariable,
+) {
   Color color1 = const Color.fromARGB(150, 0, 0, 0);
   Color color2 = const Color.fromARGB(150, 0, 0, 0);
   return [
@@ -30,23 +34,23 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 1',
           id: '11',
           box: box,
-          questions: [
-            MultipleChoiceQuestion(
+          questionDatas: [
+            MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
-            MultipleChoiceQuestion(
+            MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
-            MultipleChoiceQuestion(
+            MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
-            MultipleChoiceQuestion(
+            MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
@@ -60,8 +64,8 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 2',
           id: '12',
           box: box,
-          questions: [
-            TypedQuestion(
+          questionDatas: [
+            TypedQuestionData(
               prompt: 'What is one plus one?',
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),
@@ -90,8 +94,8 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 1',
           id: '21',
           box: box,
-          questions: [
-            AudioMultipleChoiceQuestion(
+          questionDatas: [
+            AudioMultipleChoiceQuestionData(
               prompt: 'What is 3 minus 1',
               correctIndex: 1,
               options: const [
@@ -118,8 +122,8 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 2',
           id: '22',
           box: box,
-          questions: [
-            TypedQuestion(
+          questionDatas: [
+            TypedQuestionData(
               prompt: 'What is one plus one?',
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),
@@ -147,8 +151,8 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 1',
           id: '31',
           box: box,
-          questions: [
-            AudioMultipleChoiceQuestion(
+          questionDatas: [
+            AudioMultipleChoiceQuestionData(
               prompt: 'What is 3 minus 1',
               correctIndex: 1,
               options: const [
@@ -175,8 +179,8 @@ List<SubSection> subsections(Box<dynamic> box) {
           description: 'Description 2',
           id: '32',
           box: box,
-          questions: [
-            TypedQuestion(
+          questionDatas: [
+            TypedQuestionData(
               prompt: 'What is one plus one?',
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),

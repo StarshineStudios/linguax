@@ -1,22 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
+}
+
+class ChildWidget extends StatelessWidget {
+  final String message;
+  final VoidCallback onPressed;
+
+  ChildWidget({required this.message, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(message),
+        ElevatedButton(
+          onPressed: onPressed,
+          child: Text('Set Message'),
+        ),
+      ],
+    );
+  }
+}
+
+class ParentWidget extends StatefulWidget {
+  final List<ChildWidget> children;
+
+  ParentWidget({required this.children});
+
+  @override
+  _ParentWidgetState createState() => _ParentWidgetState();
+}
+
+class _ParentWidgetState extends State<ParentWidget> {
+  String topText = 'Default Top Text';
+
+  void updateTopText(String message) {
+    setState(() {
+      topText = message;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(topText,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        SizedBox(height: 20),
+        Column(
+          children: widget.children.map((child) {
+            return ChildWidget(
+              message: child.message,
+              onPressed: () {
+                updateTopText(child.message);
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Multiple Choice Example')),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
-          ),
+        appBar: AppBar(title: Text('Flutter Parent-Child Example')),
+        body: ParentWidget(
+          children: [
+            ChildWidget(message: 'Hello from Child 1', onPressed: () {}),
+            ChildWidget(message: 'Greetings from Child 2', onPressed: () {}),
+            ChildWidget(message: 'Salutations from Child 3', onPressed: () {}),
+          ],
         ),
       ),
     );

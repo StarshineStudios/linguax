@@ -5,6 +5,7 @@ import 'sub_page_sequence.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'question.dart';
 
 class ExpandableWidget extends StatefulWidget {
   final String title;
@@ -12,7 +13,7 @@ class ExpandableWidget extends StatefulWidget {
   final String description;
   final Box<dynamic> box;
   final String id;
-  final List<Question> questions;
+  final List<QuestionData> questionDatas;
   final IconData icon;
   final List<String> dependencies;
 
@@ -21,7 +22,7 @@ class ExpandableWidget extends StatefulWidget {
       required this.title,
       required this.color,
       required this.description,
-      required this.questions,
+      required this.questionDatas,
       required this.id,
       this.icon = Icons.create,
       required this.dependencies,
@@ -42,7 +43,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   void _openSubPage(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => SubPageSequence(
-        questions: widget.questions,
+        questionDatas: widget.questionDatas,
         box: widget.box,
         id: widget.id,
       ), // Display sequence of sub-pages
