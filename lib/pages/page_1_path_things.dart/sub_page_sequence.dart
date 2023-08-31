@@ -75,7 +75,9 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             backgroundColor: mainColorBackground,
             title: const Text('Warning'),
             content: const Text(
-                'All Progress will be lost. Do you really want to go back?'),
+              'All Progress will be lost. Do you really want to go back?',
+              style: TextStyle(color: secondaryColor),
+            ),
             actions: [
               NiceButton(
                 onPressed: () =>
@@ -119,13 +121,13 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         _currentPageIndex++;
         //_answerFeedback = '';
         isNextActive = true;
-        print('test');
 
         List<Widget> resultTexts = [];
         for (int i = 0; i < results.length; i++) {
-          resultTexts.add(Text(results[i]));
+          resultTexts.add(Text('Question $i: ${results[i]}'));
         }
         pages[pages.length - 1] = Container(
+          alignment: Alignment.center,
           child: Column(
             children: resultTexts,
           ),
@@ -139,7 +141,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
           }
         }
         widget.box.put('${widget.id}finished', true);
-        widget.box.put('${widget.id}accuracy', correct / pages.length);
+        widget.box.put('${widget.id}accuracy', correct / results.length);
       });
 
       Navigator.of(context).pop();
@@ -149,7 +151,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
   @override
   Widget build(BuildContext context) {
     //controller to keep track of pages
-    bool onLastPage = false;
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -165,11 +167,6 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             children: [
               PageView(
                 physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    onLastPage = index == pages.length;
-                  });
-                },
                 controller: _controller,
                 children: pages,
               ),
@@ -184,12 +181,25 @@ class _SubPageSequenceState extends State<SubPageSequence> {
                     //   child: Text('Skip'),
                     // ),
                     SmoothPageIndicator(
-                        controller: _controller, count: pages.length),
+                      controller: _controller,
+                      count: pages.length,
+                      effect: const SlideEffect(
+                          spacing: 8.0,
+                          paintStyle: PaintingStyle.stroke,
+                          strokeWidth: 1.5,
+                          dotColor: Colors.grey,
+                          activeDotColor: mainColor),
+                    ),
                     //next or done
                     NiceButton(
                       onPressed: isNextActive ? _nextPage : () {},
                       color: isNextActive ? mainColor : Colors.grey,
-                      child: Text(onLastPage ? 'Finish' : 'Next'),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(_currentPageIndex == pages.length - 1
+                            ? 'Finish'
+                            : 'Next'),
+                      ),
                     ),
                   ],
                 ),

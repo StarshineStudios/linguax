@@ -116,7 +116,9 @@ class _AudioWidgetState extends State<AudioWidget> {
             backgroundColor: mainColorBackground,
             title: const Text('Warning'),
             content: const Text(
-                'We reccomend finishing an audio lesson in one sitting. Do you really want to go back?'),
+              'We reccomend finishing an audio lesson in one sitting. Do you really want to go back?',
+              style: TextStyle(color: secondaryColor),
+            ),
             actions: [
               NiceButton(
                 onPressed: () {
@@ -240,7 +242,10 @@ class _AudioWidgetState extends State<AudioWidget> {
                     child: Column(
                       children: [
                         Slider(
-                          value: _position.inMicroseconds.toDouble(),
+                          value: _position.inMicroseconds.toDouble() >
+                                  _duration.inMicroseconds.toDouble()
+                              ? _duration.inMicroseconds.toDouble()
+                              : _position.inMicroseconds.toDouble(),
                           onChanged: (value) async {
                             await player
                                 .seek(Duration(microseconds: value.toInt()));
@@ -254,7 +259,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                           },
                           min: 0,
                           //some audio clips have their real time 4:00:01, and therefore this number is already greater than 4:00:00
-                          max: _duration.inMicroseconds.toDouble() + 2,
+                          max: _duration.inMicroseconds.toDouble() + 10,
                           inactiveColor: Colors.grey,
                           activeColor: mainColor,
                         ),
