@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../../constants.dart';
 
 //Extensions of this class store data about a QuestionPage.
 //They are passed into QuestionPages to load data
@@ -76,25 +77,43 @@ class _MultipleChoiceQuestionState
 
   @override
   Widget build(BuildContext context) {
+    //print(_selectedOptionIndex);
     return Column(
-      children: widget.options.asMap().entries.map((entry) {
-        int index = entry.key;
-        String option = entry.value;
-        bool isSelected = index == _selectedOptionIndex;
+      children: [
+        Column(
+          children: [
+            Text(widget.prompt),
+            Column(
+              children: widget.options.asMap().entries.map((entry) {
+                int index = entry.key;
+                String option = entry.value;
+                bool isSelected = index == _selectedOptionIndex;
 
-        return ListTile(
-          onTap: () {
-            setState(() {
-              checkAndUpdateResult();
-              _selectedOptionIndex = index;
-            });
-          },
-          title: Text(option),
-          leading: isSelected
-              ? const Icon(Icons.radio_button_checked)
-              : const Icon(Icons.radio_button_unchecked),
-        );
-      }).toList(),
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: NiceButton(
+                    color: isSelected ? Colors.blue : mainColor,
+                    inactiveColor: mainColorFaded,
+                    onPressed: () {
+                      setState(() {
+                        _selectedOptionIndex = index;
+                        checkAndUpdateResult();
+                      });
+                    },
+                    active: true,
+                    child: Container(
+                      width: double.infinity,
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: Text(option),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -139,14 +158,19 @@ class _TypedQuestionState extends QuestionPageState<TypedQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (text) {
-        checkAndUpdateResult();
-      },
-      controller: widget.textController,
-      decoration: const InputDecoration(
-        hintText: 'Type Answer',
-      ),
+    return Column(
+      children: [
+        Text(widget.prompt),
+        TextField(
+          onChanged: (text) {
+            checkAndUpdateResult();
+          },
+          controller: widget.textController,
+          decoration: const InputDecoration(
+            hintText: 'Type Answer',
+          ),
+        ),
+      ],
     );
   }
 }
@@ -209,8 +233,7 @@ class _AudioMultipleChoiceQuestionState
   }
 
   void _playSound(int index) async {
-    await audioPlayer
-        .play(AssetSource(widget.soundFilePaths[_selectedOptionIndex]));
+    await audioPlayer.play(AssetSource(widget.soundFilePaths[index]));
   }
 
   @override
@@ -227,26 +250,48 @@ class _AudioMultipleChoiceQuestionState
 
   @override
   Widget build(BuildContext context) {
+    //print(_selectedOptionIndex);
     return Column(
-      children: widget.options.asMap().entries.map((entry) {
-        int index = entry.key;
-        String option = entry.value;
-        bool isSelected = index == _selectedOptionIndex;
+      children: [
+        Column(
+          children: [
+            Text(widget.prompt),
+            Column(
+              children: widget.options.asMap().entries.map((entry) {
+                int index = entry.key;
+                String option = entry.value;
+                bool isSelected = index == _selectedOptionIndex;
 
-        return ListTile(
-          onTap: () {
-            setState(() {
-              checkAndUpdateResult();
-              _playSound(index);
-              _selectedOptionIndex = index;
-            });
-          },
-          title: Text(option),
-          leading: isSelected
-              ? const Icon(Icons.radio_button_checked)
-              : const Icon(Icons.radio_button_unchecked),
-        );
-      }).toList(),
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: NiceButton(
+                    color: isSelected ? Colors.blue : mainColor,
+                    inactiveColor: mainColorFaded,
+                    onPressed: () {
+                      setState(() {
+                        _selectedOptionIndex = index;
+
+                        _playSound(index);
+                      });
+                    },
+                    active: true,
+                    child: Container(
+                      width: double.infinity,
+                      height: 32,
+                      alignment: Alignment.center,
+                      child: Text(option),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+        NiceButton(
+          onPressed: checkAndUpdateResult,
+          child: const Text('CHECK'),
+        )
+      ],
     );
   }
 }

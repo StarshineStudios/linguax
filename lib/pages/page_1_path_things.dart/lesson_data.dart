@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test2/pages/page_1_path_things.dart/audio_lesson_button.dart';
 import 'expandable_widget.dart';
-import 'sub_page_sequence.dart';
 import 'subsection.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -41,14 +40,20 @@ List<SubSection> subsections(
               options: const ['1', '2', '3', '4', '5'],
             ),
             MultipleChoiceQuestionData(
-              prompt: 'What is one plus two?',
+              prompt: 'What is f plus f?',
               correctIndex: 2,
-              options: const ['1', '2', '3', '4', '5'],
+              options: const ['a', 'b', 'c', 'e', 'd'],
             ),
             MultipleChoiceQuestionData(
-              prompt: 'What is one plus two?',
+              prompt: 'What is fsadf one  fsplus two?',
               correctIndex: 2,
-              options: const ['1', '2', '3', '4', '5'],
+              options: const [
+                '1 fsa',
+                '2 fs',
+                '3 fsda f',
+                '4 fsa f',
+                ' fsda f5'
+              ],
             ),
             MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',

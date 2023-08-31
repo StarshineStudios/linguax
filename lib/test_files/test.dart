@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class ChildWidget extends StatelessWidget {
   final String message;
   final VoidCallback onPressed;
 
-  ChildWidget({required this.message, required this.onPressed});
+  const ChildWidget({super.key, required this.message, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +16,7 @@ class ChildWidget extends StatelessWidget {
         Text(message),
         ElevatedButton(
           onPressed: onPressed,
-          child: Text('Set Message'),
+          child: const Text('Set Message'),
         ),
       ],
     );
@@ -30,10 +26,10 @@ class ChildWidget extends StatelessWidget {
 class ParentWidget extends StatefulWidget {
   final List<ChildWidget> children;
 
-  ParentWidget({required this.children});
+  const ParentWidget({super.key, required this.children});
 
   @override
-  _ParentWidgetState createState() => _ParentWidgetState();
+  State<ParentWidget> createState() => _ParentWidgetState();
 }
 
 class _ParentWidgetState extends State<ParentWidget> {
@@ -51,8 +47,8 @@ class _ParentWidgetState extends State<ParentWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(topText,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        SizedBox(height: 20),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 20),
         Column(
           children: widget.children.map((child) {
             return ChildWidget(
@@ -69,11 +65,13 @@ class _ParentWidgetState extends State<ParentWidget> {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Flutter Parent-Child Example')),
+        appBar: AppBar(title: const Text('Flutter Parent-Child Example')),
         body: ParentWidget(
           children: [
             ChildWidget(message: 'Hello from Child 1', onPressed: () {}),
