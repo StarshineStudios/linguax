@@ -22,12 +22,12 @@ class _SubPageSequenceState extends State<SubPageSequence> {
   int _currentPageIndex = 0; //The current QuestionPage Displayed
   double correct = 0; //number of questions correct.
   bool isNextActive = false; //if the button to go to the next page is availible
-  String _answerFeedback = ''; //Correct or Incorrect
+  //String _answerFeedback = ''; //Correct or Incorrect
   List<String> results = []; //how the user answered. right/wrong, etc
 
-  List<Widget> Pages = [];
+  List<Widget> pages = [];
 
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   void updateParentVariable(String newValue) {
     setState(() {
       isNextActive = true;
@@ -37,7 +37,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         results.add(newValue);
       }
 
-      print(results);
+      //print(results);
     });
   }
 
@@ -47,21 +47,23 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     for (int i = 0; i < widget.questionDatas.length; i++) {
       QuestionData currentOne = widget.questionDatas[i];
       if (currentOne is MultipleChoiceQuestionData) {
-        Pages.add(MultipleChoiceQuestion(
+        pages.add(MultipleChoiceQuestion(
             onUpdate: updateParentVariable,
             multipleChoiceQuestionData: currentOne));
         //print(currentOne.prompt);
       } else if (currentOne is TypedQuestionData) {
-        Pages.add(TypedQuestion(
+        pages.add(TypedQuestion(
             onUpdate: updateParentVariable, typedQuestionData: currentOne));
       } else if (currentOne is AudioMultipleChoiceQuestionData) {
-        Pages.add(AudioMultipleChoiceQuestion(
+        pages.add(AudioMultipleChoiceQuestion(
             onUpdate: updateParentVariable,
             audioMultipleChoiceQuestionData: currentOne));
       } else {
         //print('ERROR');
       }
     }
+
+    pages.add(Container());
   }
 
   //final List<Question> questions = widget.questions; // Store the passed real answer
@@ -101,24 +103,43 @@ class _SubPageSequenceState extends State<SubPageSequence> {
 
   void _nextPage() {
     //when the page is a questionPage
-    if (_currentPageIndex < Pages.length - 1) {
+    if (_currentPageIndex < pages.length - 2) {
       setState(() {
         _controller.nextPage(
             duration: const Duration(microseconds: 100), curve: Curves.linear);
         _currentPageIndex++;
-        _answerFeedback = '';
+        //_answerFeedback = '';
         isNextActive = false;
       });
       //when the page is the final question page (not final page)
+    } else if (_currentPageIndex == pages.length - 2) {
+      setState(() {
+        _controller.nextPage(
+            duration: const Duration(microseconds: 100), curve: Curves.linear);
+        _currentPageIndex++;
+        //_answerFeedback = '';
+        isNextActive = true;
+        print('test');
+
+        List<Widget> resultTexts = [];
+        for (int i = 0; i < results.length; i++) {
+          resultTexts.add(Text(results[i]));
+        }
+        pages[pages.length - 1] = Container(
+          child: Column(
+            children: resultTexts,
+          ),
+        );
+      });
     } else {
       setState(() {
-        for (int i = 0; i < Pages.length; i++) {
+        for (int i = 0; i < results.length; i++) {
           if (results[i] == 'Correct') {
             correct++;
           }
         }
         widget.box.put('${widget.id}finished', true);
-        widget.box.put('${widget.id}accuracy', correct / Pages.length);
+        widget.box.put('${widget.id}accuracy', correct / pages.length);
       });
 
       Navigator.of(context).pop();
@@ -146,11 +167,11 @@ class _SubPageSequenceState extends State<SubPageSequence> {
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
-                    onLastPage = index == Pages.length;
+                    onLastPage = index == pages.length;
                   });
                 },
                 controller: _controller,
-                children: Pages,
+                children: pages,
               ),
               Container(
                 alignment: const Alignment(0, 0.75),
@@ -163,7 +184,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
                     //   child: Text('Skip'),
                     // ),
                     SmoothPageIndicator(
-                        controller: _controller, count: Pages.length),
+                        controller: _controller, count: pages.length),
                     //next or done
                     NiceButton(
                       onPressed: isNextActive ? _nextPage : () {},
