@@ -21,9 +21,9 @@ class PageSettings extends StatelessWidget {
       box.put('11' 'finished', false);
       box.put('12' 'finished', false);
 
-      box.put('1al' 'accuracy', 0);
-      box.put('11' 'accuracy', 0);
-      box.put('12' 'accuracy', 0);
+      box.put('1al' 'accuracy', 0.0);
+      box.put('11' 'accuracy', 0.0);
+      box.put('12' 'accuracy', 0.0);
 ///////////////////////
       box.delete('2al' 'position');
       box.delete('2al' 'duration');
@@ -31,9 +31,9 @@ class PageSettings extends StatelessWidget {
       box.put('21' 'finished', false);
       box.put('22' 'finished', false);
 
-      box.put('2al' 'accuracy', 0);
-      box.put('21' 'accuracy', 0);
-      box.put('22' 'accuracy', 0);
+      box.put('2al' 'accuracy', 0.0);
+      box.put('21' 'accuracy', 0.0);
+      box.put('22' 'accuracy', 0.0);
 ///////////////////////\
       box.delete('3al' 'position');
       box.delete('3al' 'duration');
@@ -41,13 +41,13 @@ class PageSettings extends StatelessWidget {
       box.put('31' 'finished', false);
       box.put('32' 'finished', false);
 
-      box.put('3al' 'accuracy', 0);
-      box.put('31' 'accuracy', 0);
-      box.put('32' 'accuracy', 0);
+      box.put('3al' 'accuracy', 0.0);
+      box.put('31' 'accuracy', 0.0);
+      box.put('32' 'accuracy', 0.0);
     }
 
     return Scaffold(
-      backgroundColor: darkMode ? darkColor : secondaryColor,
+      backgroundColor: mainColorBackground,
       appBar: AppBar(
         backgroundColor: mainColor,
         title: const Text(
@@ -64,8 +64,7 @@ class PageSettings extends StatelessWidget {
             children: [
               Text(
                 'Dark Mode',
-                style:
-                    TextStyle(color: darkMode ? secondaryColor : Colors.black),
+                style: TextStyle(color: secondaryColor),
               ),
               Container(
                 color: const Color.fromARGB(0, 0, 0, 0),
@@ -120,23 +119,30 @@ class _ConfirmationButtonState extends State<ConfirmationButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: mainColorBackground,
           title: Text(widget.title),
           content: Text(widget.dialog),
           actions: [
-            TextButton(
+            NiceButton(
               onPressed: () {
-                // Reset progress and dismiss the dialog
                 widget.onConfirm();
                 Navigator.of(context).pop();
-              },
-              child: const Text('Yes'),
+              }, // Allow navigation back
+              child: const Padding(
+                padding:
+                    EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                child: Text('Yes'),
+              ),
             ),
-            TextButton(
+            NiceButton(
               onPressed: () {
-                // Dismiss the dialog
                 Navigator.of(context).pop();
-              },
-              child: const Text('No'),
+              }, // Stay on the page
+              child: const Padding(
+                padding:
+                    EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+                child: Text('No'),
+              ),
             ),
           ],
         );

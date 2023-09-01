@@ -18,7 +18,7 @@ class PagePath extends StatelessWidget {
       valueListenable: Hive.box(generalBox).listenable(),
       builder: (context, box, widget) {
         return Scaffold(
-          backgroundColor: darkMode ? darkColor : secondaryColor,
+          backgroundColor: darkMode ? mainColorBackground : secondaryColor,
           appBar: AppBar(
             backgroundColor: mainColor,
             title: const Text(

@@ -35,17 +35,20 @@ List<SubSection> subsections(
           box: box,
           questionDatas: [
             MultipleChoiceQuestionData(
-              prompt: 'What is one plus two?',
+              prompt: 'Prompt',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
             MultipleChoiceQuestionData(
               prompt: 'What is f plus f?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 2,
               options: const ['a', 'b', 'c', 'e', 'd'],
             ),
             MultipleChoiceQuestionData(
               prompt: 'What is fsadf one  fsplus two?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 2,
               options: const [
                 '1 fsa',
@@ -57,6 +60,7 @@ List<SubSection> subsections(
             ),
             MultipleChoiceQuestionData(
               prompt: 'What is one plus two?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 2,
               options: const ['1', '2', '3', '4', '5'],
             ),
@@ -72,6 +76,7 @@ List<SubSection> subsections(
           questionDatas: [
             TypedQuestionData(
               prompt: 'What is one plus one?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),
           ],
@@ -102,6 +107,7 @@ List<SubSection> subsections(
           questionDatas: [
             AudioMultipleChoiceQuestionData(
               prompt: 'What is 3 minus 1',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 1,
               options: const [
                 'sound 1',
@@ -130,6 +136,7 @@ List<SubSection> subsections(
           questionDatas: [
             TypedQuestionData(
               prompt: 'What is one plus one?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),
           ],
@@ -159,6 +166,7 @@ List<SubSection> subsections(
           questionDatas: [
             AudioMultipleChoiceQuestionData(
               prompt: 'What is 3 minus 1',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               correctIndex: 1,
               options: const [
                 'sound 1',
@@ -187,6 +195,7 @@ List<SubSection> subsections(
           questionDatas: [
             TypedQuestionData(
               prompt: 'What is one plus one?',
+              hints: ['Hint 1', 'Hint 2', 'Hint 3'],
               answers: const ['two', 'Two', '2', 'Dos', 'dos'],
             ),
           ],

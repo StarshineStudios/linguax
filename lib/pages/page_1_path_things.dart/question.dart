@@ -6,7 +6,8 @@ import '../../constants.dart';
 //They are passed into QuestionPages to load data
 abstract class QuestionData {
   final String prompt;
-  QuestionData({Key? key, required this.prompt});
+  final List<String> hints; //final one will be answer explanation
+  QuestionData({Key? key, required this.prompt, required this.hints});
 }
 
 //Extensions of this class display a question page which display a question
@@ -35,7 +36,8 @@ class MultipleChoiceQuestionData extends QuestionData {
       {Key? key,
       required this.options,
       required this.correctIndex,
-      required super.prompt})
+      required super.prompt,
+      required super.hints})
       : super(key: key);
 }
 
@@ -45,6 +47,7 @@ class MultipleChoiceQuestion extends QuestionPage {
   final List<String> options;
   final int correctIndex;
   final String prompt;
+  final List<String> hints;
   //the data from the questionData is loaded into the questionPage
   MultipleChoiceQuestion({
     super.key,
@@ -52,7 +55,8 @@ class MultipleChoiceQuestion extends QuestionPage {
     required this.multipleChoiceQuestionData,
   })  : prompt = multipleChoiceQuestionData.prompt,
         options = multipleChoiceQuestionData.options,
-        correctIndex = multipleChoiceQuestionData.correctIndex;
+        correctIndex = multipleChoiceQuestionData.correctIndex,
+        hints = multipleChoiceQuestionData.hints;
 
   @override
   QuestionPageState<MultipleChoiceQuestion> createState() =>
@@ -122,22 +126,28 @@ class _MultipleChoiceQuestionState
 class TypedQuestionData extends QuestionData {
   final List<String> answers;
 
-  TypedQuestionData({Key? key, required this.answers, required super.prompt})
-      : super(key: key);
+  TypedQuestionData({
+    Key? key,
+    required this.answers,
+    required super.prompt,
+    required super.hints,
+  }) : super(key: key);
 }
 
 class TypedQuestion extends QuestionPage {
   final TypedQuestionData typedQuestionData;
   final TextEditingController textController = TextEditingController();
 
-  final String prompt;
   final List<String> answers;
+  final String prompt;
+  final List<String> hints;
   TypedQuestion({
     super.key,
     required super.onUpdate,
     required this.typedQuestionData,
   })  : prompt = typedQuestionData.prompt,
-        answers = typedQuestionData.answers;
+        answers = typedQuestionData.answers,
+        hints = typedQuestionData.hints;
 
   @override
   QuestionPageState<TypedQuestion> createState() => _TypedQuestionState();
@@ -185,13 +195,14 @@ class AudioMultipleChoiceQuestionData extends QuestionData {
   final List<String> soundFilePaths;
   final int correctIndex;
 
-  AudioMultipleChoiceQuestionData(
-      {Key? key,
-      required this.options,
-      required this.correctIndex,
-      required this.soundFilePaths,
-      required super.prompt})
-      : super(key: key);
+  AudioMultipleChoiceQuestionData({
+    Key? key,
+    required this.options,
+    required this.correctIndex,
+    required this.soundFilePaths,
+    required super.prompt,
+    required super.hints,
+  }) : super(key: key);
 }
 
 //This is a widget that simply displays a Column of multiple choices.
@@ -201,6 +212,7 @@ class AudioMultipleChoiceQuestion extends QuestionPage {
   final List<String> soundFilePaths;
   final int correctIndex;
   final String prompt;
+  final List<String> hints;
   //the data from the questionData is loaded into the questionPage
   AudioMultipleChoiceQuestion({
     super.key,
@@ -209,7 +221,8 @@ class AudioMultipleChoiceQuestion extends QuestionPage {
   })  : prompt = audioMultipleChoiceQuestionData.prompt,
         options = audioMultipleChoiceQuestionData.options,
         soundFilePaths = audioMultipleChoiceQuestionData.soundFilePaths,
-        correctIndex = audioMultipleChoiceQuestionData.correctIndex;
+        correctIndex = audioMultipleChoiceQuestionData.correctIndex,
+        hints = audioMultipleChoiceQuestionData.hints;
 
   @override
   QuestionPageState<AudioMultipleChoiceQuestion> createState() =>

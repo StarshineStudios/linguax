@@ -21,16 +21,23 @@ class SubPageSequence extends StatefulWidget {
 class _SubPageSequenceState extends State<SubPageSequence> {
   int _currentPageIndex = 0; //The current QuestionPage Displayed
   double correct = 0; //number of questions correct.
-  bool isNextActive = false; //if the button to go to the next page is availible
+  bool isCheckActive = false; //if the button to go to the next page is
+  bool isCheckNext = false; //if check button is a next
+  String feedback = '';
+  Color feedbackColor = Colors.black;
+  int numberOfHints = 0;
+  List<List<String>> listsOfHints = [];
+
   //String _answerFeedback = ''; //Correct or Incorrect
   List<String> results = []; //how the user answered. right/wrong, etc
+  List<String> firstTryResults = [];
 
   List<Widget> pages = [];
 
   final PageController _controller = PageController();
   void updateParentVariable(String newValue) {
     setState(() {
-      isNextActive = true;
+      isCheckActive = true;
       if (results.length >= _currentPageIndex + 1) {
         results[_currentPageIndex] = newValue;
       } else {
@@ -46,6 +53,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     super.initState();
     for (int i = 0; i < widget.questionDatas.length; i++) {
       QuestionData currentOne = widget.questionDatas[i];
+      listsOfHints.add(currentOne.hints);
       if (currentOne is MultipleChoiceQuestionData) {
         pages.add(MultipleChoiceQuestion(
             onUpdate: updateParentVariable,
@@ -64,6 +72,8 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     }
 
     pages.add(Container());
+    //solely to prevent some glitches when the hints list is not logn enough
+    listsOfHints.add([]);
   }
 
   //final List<Question> questions = widget.questions; // Store the passed real answer
@@ -103,7 +113,37 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         false;
   }
 
+  void _checkAnswer() {
+    if (firstTryResults.length >= _currentPageIndex + 1) {
+      //WILL NOT BE REASSIGNED
+      //firstTryResults[_currentPageIndex] = newValue;
+    } else {
+      firstTryResults.add(results[_currentPageIndex]);
+    }
+
+    setState(() {
+      if (results[results.length - 1] == 'Incorrect') {
+        isCheckActive = false;
+        feedback = 'Incorrect. Try again';
+        _nextHint();
+        feedbackColor = Colors.red;
+      } else {
+        if (firstTryResults[firstTryResults.length - 1] == 'Incorrect') {
+          feedback = 'You needed some help, but you got it!';
+          isCheckNext = true;
+          feedbackColor = Colors.green;
+        } else {
+          feedback = 'Correct! Move on to the next question';
+          isCheckNext = true;
+          feedbackColor = Colors.green;
+        }
+      }
+    });
+  }
+
   void _nextPage() {
+    numberOfHints = 0;
+    feedback = '';
     //when the page is a questionPage
     if (_currentPageIndex < pages.length - 2) {
       setState(() {
@@ -111,7 +151,8 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             duration: const Duration(microseconds: 100), curve: Curves.linear);
         _currentPageIndex++;
         //_answerFeedback = '';
-        isNextActive = false;
+        isCheckActive = false;
+        isCheckNext = false;
       });
       //when the page is the final question page (not final page)
     } else if (_currentPageIndex == pages.length - 2) {
@@ -120,11 +161,20 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             duration: const Duration(microseconds: 100), curve: Curves.linear);
         _currentPageIndex++;
         //_answerFeedback = '';
-        isNextActive = true;
+        isCheckActive = true;
+        isCheckNext = true;
 
         List<Widget> resultTexts = [];
-        for (int i = 0; i < results.length; i++) {
-          resultTexts.add(Text('Question $i: ${results[i]}'));
+        resultTexts.add(Text(
+          'Results \n (First answer attempt)',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+        ));
+        for (int i = 0; i < firstTryResults.length; i++) {
+          resultTexts.add(Text('Question ${i + 1}: ${firstTryResults[i]}'));
         }
         pages[pages.length - 1] = Container(
           alignment: Alignment.center,
@@ -148,9 +198,23 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     }
   }
 
+  void _nextHint() {
+    if (numberOfHints < listsOfHints[_currentPageIndex].length) {
+      setState(() {
+        numberOfHints++;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //controller to keep track of pages
+    List<Widget> hintTexts = [];
+    for (int i = 0; i < numberOfHints; i++) {
+      hintTexts.add(Text(
+        'Hint ${i + 1}: \n ${listsOfHints[_currentPageIndex][i]}',
+        style: TextStyle(fontSize: 15),
+      ));
+    }
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -163,43 +227,112 @@ class _SubPageSequenceState extends State<SubPageSequence> {
         body: Padding(
           padding:
               const EdgeInsets.only(bottom: 24, top: 24, left: 55, right: 55),
-          child: Stack(
+          child: Column(
             children: [
-              PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _controller,
-                children: pages,
+              Expanded(
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 400,
+                      child: PageView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        controller: _controller,
+                        children: pages,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      child: Column(children: hintTexts),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 alignment: const Alignment(0, 0.75),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
                   children: [
-                    // //TEMP BUTTON
-                    // NiceButton(
-                    //   onPressed: _nextPage,
-                    //   child: Text('Skip'),
-                    // ),
-                    SmoothPageIndicator(
-                      controller: _controller,
-                      count: pages.length,
-                      effect: const SlideEffect(
-                          spacing: 8.0,
-                          paintStyle: PaintingStyle.stroke,
-                          strokeWidth: 1.5,
-                          dotColor: Colors.grey,
-                          activeDotColor: mainColor),
+                    feedback == ''
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(defaultRadius),
+                                  color: feedbackColor),
+                              padding: EdgeInsets.all(9.0),
+                              child: Text(
+                                feedback,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: secondaryColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                    Container(
+                      alignment: const Alignment(0, 0.65),
+                      child: Text('Do ${pages.length - 1} questions'),
                     ),
-                    //next or done
-                    NiceButton(
-                      onPressed: isNextActive ? _nextPage : () {},
-                      color: isNextActive ? mainColor : Colors.grey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(_currentPageIndex == pages.length - 1
-                            ? 'Finish'
-                            : 'Next'),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //This thing will glitch out if it is on the results page because the hints dont exist.
+                        //for a safety measure i added an empty list of hints at the end
+                        //but this is a pretty disgusting solution tbh
+                        _currentPageIndex < pages.length - 1
+                            ? NiceButton(
+                                onPressed: _nextHint,
+                                color: numberOfHints <=
+                                        listsOfHints[_currentPageIndex].length -
+                                            1
+                                    ? mainColor
+                                    : Colors.grey,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(numberOfHints <
+                                          listsOfHints[_currentPageIndex]
+                                                  .length -
+                                              1
+                                      ? 'Show Hint'
+                                      : numberOfHints ==
+                                              listsOfHints[_currentPageIndex]
+                                                      .length -
+                                                  1
+                                          ? 'Show Answer'
+                                          : 'No Hints Left'),
+                                ),
+                              )
+                            : Container(),
+                        SmoothPageIndicator(
+                          controller: _controller,
+                          count: pages.length,
+                          effect: const ScaleEffect(
+                              scale: 1.5,
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              dotColor: mainColor,
+                              activeDotColor: mainColor,
+                              activePaintStyle: PaintingStyle.stroke,
+                              strokeWidth: 2),
+                        ),
+                        //next or done
+                        NiceButton(
+                          onPressed: isCheckNext ? _nextPage : _checkAnswer,
+                          color: isCheckActive || isCheckNext
+                              ? mainColor
+                              : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(_currentPageIndex == pages.length - 1
+                                ? 'Finish'
+                                : isCheckNext
+                                    ? 'Next'
+                                    : 'Check'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -211,67 +344,3 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     );
   }
 }
-
-
-// Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               const Text(
-//                 'hi',
-//                 //widget.questions[_currentPageIndex].prompt,
-//                 style: TextStyle(fontSize: 27),
-//               ),
-//               //questionPages[_currentPageIndex],
-//               currentPage(),
-//               // Text(questionAnswers[_currentPageIndex].questionText),
-//               // const SizedBox(height: 16.0),
-
-//               // const SizedBox(height: 16.0),
-//               // ElevatedButton(
-//               //   onPressed: () {
-//               //     if (widget.questions[_currentPageIndex].check()) {
-//               //       setState(() {
-//               //         if (_answerFeedback == '') {
-//               //           correct++;
-//               //         }
-//               //         _answerFeedback = 'Correct';
-//               //         isNextActive = true;
-//               //       });
-//               //     } else {
-//               //       setState(() {
-//               //         isNextActive = false; // TEMPORARY THING LJASKLJF:LADS
-
-//               //         _answerFeedback =
-//               //             'Incorrect. Hint: ${widget.questions[_currentPageIndex].hint()}. fsljlfas';
-//               //       });
-//               //     }
-//               //   },
-//               //   child: const Text(
-//               //     'Check',
-//               //     style: TextStyle(fontSize: 24),
-//               //   ),
-//               // ),
-//               const SizedBox(height: 8.0),
-//               Text(
-//                 _answerFeedback,
-//                 style: TextStyle(
-//                   color:
-//                       _answerFeedback == 'Correct' ? Colors.green : Colors.red,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//               const SizedBox(height: 16.0),
-//               ElevatedButton(
-//                 onPressed: isNextActive
-//                     ? () {
-//                         _nextPage();
-//                       }
-//                     : null,
-//                 child: const Text(
-//                   'Next',
-//                   style: TextStyle(fontSize: 24),
-//                 ),
-//               ),
-//             ],
-//           ),
