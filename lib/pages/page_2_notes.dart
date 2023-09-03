@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test2/constants.dart';
 
 class PageNotes extends StatelessWidget {
   const PageNotes({super.key});
@@ -6,7 +7,7 @@ class PageNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Notes', style: TextStyle(fontSize: 50)),
+      child: Text('Notes', style: headingStyle2),
     );
   }
 }

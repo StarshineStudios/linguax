@@ -29,6 +29,7 @@ class AudioWidget extends StatefulWidget {
 
 class _AudioWidgetState extends State<AudioWidget> {
   bool isPlaying = false;
+  double playbackSpeed = 1.0;
   late final AudioPlayer player;
   late final AssetSource path;
 
@@ -109,6 +110,29 @@ class _AudioWidgetState extends State<AudioWidget> {
     setState(() {});
   }
 
+  void changePlaybackSpeed() {
+    setState(() {
+      playbackSpeed += 0.5;
+      if (playbackSpeed >= 5.5) {
+        playbackSpeed = 0.5;
+      }
+      player.setPlaybackRate(playbackSpeed);
+
+      //this works but its kinda shit.
+      playPause();
+      playPause();
+
+      isPlaying = true;
+    });
+  }
+
+  String formatDouble(double number) {
+    if (number.toInt().toDouble() != number) {
+      return '${number}x';
+    }
+    return '${number.toInt()}x';
+  }
+
   Future<bool> _onWillPop() async {
     return await showDialog(
           context: context,
@@ -176,65 +200,65 @@ class _AudioWidgetState extends State<AudioWidget> {
           backgroundColor: mainColor,
           foregroundColor: secondaryColor,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        body: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                      color: mainColor,
-                    ),
-                    padding: const EdgeInsets.all(defaultPadding),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(widget.imageSource),
-                          colorFilter: const ColorFilter.mode(
-                              mainColor, BlendMode.softLight),
+                  //Image with title
 
-                          ///makes the image black and white if locked
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 200,
-                              ),
-                              const Text(
-                                'Latin',
-                                style: headingStyle1,
-                              ),
-                              Text(
-                                widget.title,
-                                style: headingStyle2,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  //Sliders and such
                   Container(
+                    padding: EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                         color: mainColorDarker,
                         borderRadius: BorderRadius.circular(defaultRadius)),
                     child: Column(
                       children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                            color: mainColor,
+                          ),
+                          padding: const EdgeInsets.all(defaultPadding),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(widget.imageSource),
+                                colorFilter: const ColorFilter.mode(
+                                    mainColor, BlendMode.softLight),
+
+                                ///makes the image black and white if locked
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 200,
+                                    ),
+                                    const Text(
+                                      'Latin',
+                                      style: headingStyle1,
+                                    ),
+                                    Text(
+                                      widget.title,
+                                      style: headingStyle2,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Slider(
                           value: _position.inMicroseconds.toDouble() >
                                   _duration.inMicroseconds.toDouble()
@@ -270,9 +294,21 @@ class _AudioWidgetState extends State<AudioWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            NiceButton(
-                              borderRadius: 100,
-                              onPressed: () {
+                            //all the way seconds back
+                            GestureDetector(
+                              onTap: () {
+                                player.seek(Duration(microseconds: 0));
+                              },
+                              child: const Icon(
+                                Icons.skip_previous,
+                                color: secondaryColor,
+                                size: 70,
+                              ),
+                            ),
+
+                            //10 seconds back
+                            GestureDetector(
+                              onTap: () {
                                 player.seek(Duration(
                                     microseconds: _position.inMicroseconds -
                                         10 * 1000000));
@@ -280,29 +316,28 @@ class _AudioWidgetState extends State<AudioWidget> {
                               child: const Icon(
                                 Icons.replay_10,
                                 color: secondaryColor,
-                                size: 100,
+                                size: 70,
                               ),
                             ),
                             const SizedBox(
-                              width: 16,
+                              width: 8,
                             ),
+                            //play/pause
                             NiceButton(
                               borderRadius: 100,
                               onPressed: playPause,
                               child: Icon(
-                                isPlaying
-                                    ? Icons.pause_circle
-                                    : Icons.play_circle,
+                                isPlaying ? Icons.pause : Icons.play_arrow,
                                 color: secondaryColor,
-                                size: 100,
+                                size: 70,
                               ),
                             ),
                             const SizedBox(
-                              width: 16,
+                              width: 8,
                             ),
-                            NiceButton(
-                              borderRadius: 100,
-                              onPressed: () {
+                            //10 seconds forward
+                            GestureDetector(
+                              onTap: () {
                                 player.seek(Duration(
                                     microseconds: _position.inMicroseconds +
                                         10 * 1000000));
@@ -310,20 +345,29 @@ class _AudioWidgetState extends State<AudioWidget> {
                               child: const Icon(
                                 Icons.forward_10,
                                 color: secondaryColor,
-                                size: 100,
+                                size: 70,
                               ),
                             ),
+
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  changePlaybackSpeed();
+                                },
+                                child: SizedBox(
+                                    width: 40,
+                                    child: Text(formatDouble(playbackSpeed)))),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 16,
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 8,
                   ),
+                  //Description
                   Container(
                     decoration: BoxDecoration(
                         color: mainColorDarker,

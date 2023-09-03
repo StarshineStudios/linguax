@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_test2/constants.dart';
 
 class PageDictionary extends StatelessWidget {
   const PageDictionary({super.key});
@@ -7,7 +7,7 @@ class PageDictionary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Dictionary', style: TextStyle(fontSize: 50)),
+      child: Text('Dictionary', style: headingStyle2),
     );
   }
 }
