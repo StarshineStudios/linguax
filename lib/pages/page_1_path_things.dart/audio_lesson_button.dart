@@ -4,7 +4,7 @@ import 'package:flutter_test2/pages/page_1_path_things.dart/audio_widget.dart';
 import '../../constants.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
-
+import '../../constants.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class AudioLessonButton extends StatefulWidget {
@@ -114,10 +114,7 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           widget.title,
-                          style: const TextStyle(
-                              color: secondaryColor,
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold),
+                          style: headingStyle2,
                         ),
                       ),
                       Container(
@@ -155,112 +152,6 @@ class _AudioLessonButtonState extends State<AudioLessonButton> {
               ),
             ),
           );
-
-          // Padding(
-          //   padding: const EdgeInsets.all(0),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       ElevatedButton(
-          //         onPressed: _toggleExpanded,
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: widget.color,
-          //           foregroundColor: secondaryColor,
-          //         ),
-          //         child: Padding(
-          //           padding: const EdgeInsets.all(8.0),
-          //           child: Column(
-          //             children: [
-          //               Row(
-          //                 children: [
-          //                   Icon(finished
-          //                       ? Icons.check_box_outlined
-          //                       : Icons.check_box_outline_blank),
-          //                   const SizedBox(
-          //                     width: 16,
-          //                   ),
-          //                   Text(widget.title),
-          //                 ],
-          //               ),
-          //               const Center(
-          //                 child: Row(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   children: [
-          //                     Icon(
-          //                       Icons.multitrack_audio,
-          //                       size: 50,
-          //                     ),
-          //                     Icon(
-          //                       Icons.play_circle_outline_outlined,
-          //                       size: 50,
-          //                     ),
-          //                     Icon(
-          //                       Icons.multitrack_audio,
-          //                       size: 50,
-          //                     ),
-          //                   ],
-          //                 ),
-          //               )
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //       if (_isExpanded)
-          //         Column(
-          //           children: [
-          //             TriangleClipPath(
-          //               color: widget.color,
-          //               width: 15,
-          //               height: 10,
-          //             ),
-          //             Center(
-          //               child: Container(
-          //                 decoration: BoxDecoration(
-          //                   borderRadius: BorderRadius.circular(10),
-          //                   color: widget.color,
-          //                   border: Border.all(width: 0, color: widget.color),
-          //                 ),
-          //                 padding: const EdgeInsets.all(16.0),
-          //                 child: Column(
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       widget.description,
-          //                       style: const TextStyle(
-          //                           color: secondaryColor, fontFamily: 'Nunito'),
-          //                     ),
-          //                     const SizedBox(height: 16.0),
-          //                     ElevatedButton(
-          //                       style: ButtonStyle(
-          //                         backgroundColor:
-          //                             MaterialStateProperty.all(mainColor),
-          //                         padding: MaterialStateProperty.all(
-          //                             const EdgeInsets.all(1)),
-          //                       ),
-          //                       onPressed: () => _openSubPage(context),
-          //                       child: Center(
-          //                         widthFactor: 1.5,
-          //                         child: Padding(
-          //                           padding: const EdgeInsets.all(10.0),
-          //                           child: Text(
-          //                             finished
-          //                                 ? 'Listen again'
-          //                                 : 'Begin Audio Lesson',
-          //                             style:
-          //                                 const TextStyle(color: secondaryColor),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //     ],
-          //   ),
-          // );
         },
       ),
     );

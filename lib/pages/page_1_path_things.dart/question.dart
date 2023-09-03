@@ -86,7 +86,7 @@ class _MultipleChoiceQuestionState
       children: [
         Column(
           children: [
-            Text(widget.prompt, style: const TextStyle(fontSize: 30)),
+            Text(widget.prompt, style: headingStyle3),
             Column(
               children: widget.options.asMap().entries.map((entry) {
                 int index = entry.key;
@@ -170,16 +170,15 @@ class _TypedQuestionState extends QuestionPageState<TypedQuestion> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(widget.prompt, style: const TextStyle(fontSize: 30)),
+        Text(widget.prompt, style: headingStyle3),
         TextField(
           onChanged: (text) {
             checkAndUpdateResult();
           },
-          style: const TextStyle(color: secondaryColor),
+          style: normalStyle,
           controller: widget.textController,
           decoration: const InputDecoration(
-              hintText: 'Type Answer',
-              hintStyle: TextStyle(color: secondaryColor)),
+              hintText: 'Type Answer', hintStyle: normalStyle),
         ),
       ],
     );
@@ -269,7 +268,7 @@ class _AudioMultipleChoiceQuestionState
       children: [
         Column(
           children: [
-            Text(widget.prompt, style: const TextStyle(fontSize: 30)),
+            Text(widget.prompt, style: headingStyle3),
             Column(
               children: widget.options.asMap().entries.map((entry) {
                 int index = entry.key;

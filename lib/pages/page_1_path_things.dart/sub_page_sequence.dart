@@ -86,7 +86,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
             title: const Text('Warning'),
             content: const Text(
               'All Progress will be lost. Do you really want to go back?',
-              style: TextStyle(color: secondaryColor),
+              style: normalStyle,
             ),
             actions: [
               NiceButton(
@@ -148,7 +148,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     if (_currentPageIndex < pages.length - 2) {
       setState(() {
         _controller.nextPage(
-            duration: const Duration(microseconds: 100), curve: Curves.linear);
+            duration: const Duration(microseconds: 400), curve: Curves.linear);
         _currentPageIndex++;
         //_answerFeedback = '';
         isCheckActive = false;
@@ -158,20 +158,17 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     } else if (_currentPageIndex == pages.length - 2) {
       setState(() {
         _controller.nextPage(
-            duration: const Duration(microseconds: 100), curve: Curves.linear);
+            duration: const Duration(microseconds: 400), curve: Curves.linear);
         _currentPageIndex++;
         //_answerFeedback = '';
         isCheckActive = true;
         isCheckNext = true;
 
         List<Widget> resultTexts = [];
-        resultTexts.add(Text(
+        resultTexts.add(const Text(
           'Results \n (First answer attempt)',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+          style: headingStyle3,
         ));
         for (int i = 0; i < firstTryResults.length; i++) {
           resultTexts.add(Text('Question ${i + 1}: ${firstTryResults[i]}'));
@@ -212,7 +209,7 @@ class _SubPageSequenceState extends State<SubPageSequence> {
     for (int i = 0; i < numberOfHints; i++) {
       hintTexts.add(Text(
         'Hint ${i + 1}: \n ${listsOfHints[_currentPageIndex][i]}',
-        style: TextStyle(fontSize: 15),
+        style: normalStyle,
       ));
     }
 
@@ -260,14 +257,11 @@ class _SubPageSequenceState extends State<SubPageSequence> {
                                   borderRadius:
                                       BorderRadius.circular(defaultRadius),
                                   color: feedbackColor),
-                              padding: EdgeInsets.all(9.0),
+                              padding: const EdgeInsets.all(9.0),
                               child: Text(
                                 feedback,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: secondaryColor,
-                                    fontWeight: FontWeight.bold),
+                                style: normalStyle,
                               ),
                             ),
                           ),

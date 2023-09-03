@@ -87,48 +87,6 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // if (_isExpanded)
-                //   Row(
-                //     children: [
-                //       Container(
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10),
-                //           color: widget.color,
-                //           border: Border.all(width: 0, color: widget.color),
-                //         ),
-                //         padding: const EdgeInsets.all(10),
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.center,
-                //           children: [
-                //             Text(
-                //               widget.description,
-                //               style: const TextStyle(
-                //                   color: secondaryColor, fontFamily: 'Nunito'),
-                //             ),
-                //             NiceButton(
-                //               onPressed: () => _openSubPage(context),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.all(10.0),
-                //                 child: Text(
-                //                   finished ? 'Practice again' : 'Practice',
-                //                   style: const TextStyle(color: secondaryColor),
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //       RotatedBox(
-                //         quarterTurns: 1,
-                //         child: TriangleClipPath(
-                //           color: widget.color,
-                //           width: 15,
-                //           height: 10,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-
                 CircularPercentIndicator(
                   radius: 60,
                   lineWidth: 10,
@@ -174,8 +132,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                           children: [
                             Text(
                               widget.description,
-                              style: const TextStyle(
-                                  color: secondaryColor, fontFamily: 'Nunito'),
+                              style: normalStyle,
                             ),
                             NiceButton(
                               onPressed: () => _openSubPage(context),
@@ -183,7 +140,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text(
                                   finished ? 'Practice again' : 'Practice',
-                                  style: const TextStyle(color: secondaryColor),
+                                  style: normalStyle,
                                 ),
                               ),
                             ),

@@ -52,7 +52,7 @@ class PageSettings extends StatelessWidget {
         backgroundColor: mainColor,
         title: const Text(
           'Settings',
-          style: TextStyle(color: secondaryColor),
+          style: headingStyle2,
         ),
       ),
       body: Padding(
@@ -64,7 +64,7 @@ class PageSettings extends StatelessWidget {
             children: [
               const Text(
                 'Dark Mode',
-                style: TextStyle(color: secondaryColor),
+                style: normalStyle,
               ),
               Container(
                 color: const Color.fromARGB(0, 0, 0, 0),
@@ -109,7 +109,7 @@ class _ConfirmationButtonState extends State<ConfirmationButton> {
       onPressed: _showConfirmationDialog,
       child: Text(
         widget.title,
-        style: const TextStyle(color: secondaryColor),
+        style: normalStyle,
       ),
     );
   }

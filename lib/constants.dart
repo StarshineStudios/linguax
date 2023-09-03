@@ -7,9 +7,22 @@ const mainColorBackground = Color.fromARGB(255, 43, 24, 75);
 const darkColor = Color.fromARGB(255, 30, 29, 31);
 const secondaryColor = Color.fromARGB(255, 255, 247, 220);
 
-const double defaultRadius = 10;
 const generalBox = 'darkModeTutorial';
+
 const double defaultPadding = 5;
+const double defaultRadius = 10;
+
+const TextStyle headingStyle1 =
+    TextStyle(color: secondaryColor, fontWeight: FontWeight.bold, fontSize: 50);
+const TextStyle headingStyle2 =
+    TextStyle(color: secondaryColor, fontWeight: FontWeight.bold, fontSize: 40);
+const TextStyle headingStyle3 =
+    TextStyle(color: secondaryColor, fontWeight: FontWeight.bold, fontSize: 30);
+const TextStyle headingStyle4 =
+    TextStyle(color: secondaryColor, fontWeight: FontWeight.bold, fontSize: 20);
+
+const TextStyle normalStyle = TextStyle(
+    color: secondaryColor, fontWeight: FontWeight.normal, fontSize: 20);
 
 class NiceButton extends StatefulWidget {
   final Color color;

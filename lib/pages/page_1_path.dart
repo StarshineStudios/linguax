@@ -23,7 +23,7 @@ class PagePath extends StatelessWidget {
             backgroundColor: mainColor,
             title: const Text(
               'Course',
-              style: TextStyle(color: secondaryColor),
+              style: headingStyle2,
             ),
           ),
           body: ListView(

@@ -117,7 +117,7 @@ class _AudioWidgetState extends State<AudioWidget> {
             title: const Text('Warning'),
             content: const Text(
               'We reccomend finishing an audio lesson in one sitting. Do you really want to go back?',
-              style: TextStyle(color: secondaryColor),
+              style: normalStyle,
             ),
             actions: [
               NiceButton(
@@ -214,17 +214,11 @@ class _AudioWidgetState extends State<AudioWidget> {
                               ),
                               const Text(
                                 'Latin',
-                                style: TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 45,
-                                    fontWeight: FontWeight.bold),
+                                style: headingStyle1,
                               ),
                               Text(
                                 widget.title,
-                                style: const TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold),
+                                style: headingStyle2,
                               ),
                             ],
                           ),
@@ -341,7 +335,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                           children: [
                             Text(
                               widget.imageCaption,
-                              style: const TextStyle(color: secondaryColor),
+                              style: normalStyle,
                             ),
                             const SizedBox(
                               height: 66,
